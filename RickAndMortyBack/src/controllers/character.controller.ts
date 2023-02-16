@@ -26,7 +26,7 @@ export const postCharacter = async (req: Request, res: Response) => {
     const { name, status, species, type, gender, image } = req.body;
     if (!name || !status || !species || !gender)
       throw new Error('Bad Request.');
-    const newCharacter = Character.create({
+    const newCharacter = await Character.create({
       name,
       status,
       species,
@@ -43,7 +43,7 @@ export const postCharacter = async (req: Request, res: Response) => {
 export const deleteCharacter = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const character = Character.findByPk(id);
+    const character = await Character.findByPk(id);
     if (!character) throw new Error('Bad Request.');
     await character.destroy();
     res.status(202).json({ msg: 'Accepted.' });

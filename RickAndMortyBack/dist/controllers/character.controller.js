@@ -39,7 +39,7 @@ const postCharacter = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const { name, status, species, type, gender, image } = req.body;
         if (!name || !status || !species || !gender)
             throw new Error('Bad Request.');
-        const newCharacter = Character_1.Character.create({
+        const newCharacter = yield Character_1.Character.create({
             name,
             status,
             species,
@@ -57,7 +57,7 @@ exports.postCharacter = postCharacter;
 const deleteCharacter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const character = Character_1.Character.findByPk(id);
+        const character = yield Character_1.Character.findByPk(id);
         if (!character)
             throw new Error('Bad Request.');
         yield character.destroy();
