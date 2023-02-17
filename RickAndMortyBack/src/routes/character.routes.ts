@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import {
-  getCharacters,
+  getCharactersDB,
+  getCharactersApi,
   getCharacter,
   postCharacter,
   deleteCharacter,
@@ -8,7 +9,8 @@ import {
 
 const router = Router();
 
-router.get('/characters', getCharacters);
+router.get('/charactersdb', getCharactersDB);
+router.get('/characters', getCharactersApi);
 router.post('/characters', postCharacter);
 router.get('/characters/:id', getCharacter);
 router.delete('/characters/:id', deleteCharacter);
