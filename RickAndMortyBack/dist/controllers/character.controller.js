@@ -9,10 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCharacter = exports.postCharacter = exports.getCharacter = exports.getCharacters = void 0;
+exports.deleteCharacter = exports.postCharacter = exports.getCharacter = exports.getCharactersApi = exports.getCharactersDB = void 0;
 const characterApi_1 = require("./../services/characterApi");
 const Character_1 = require("../models/Character");
-const getCharacters = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const charactersApi_1 = require("../services/charactersApi");
+const getCharactersDB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const characters = yield Character_1.Character.findAll();
         if (!characters)
@@ -23,7 +24,19 @@ const getCharacters = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.status(404).json(error);
     }
 });
-exports.getCharacters = getCharacters;
+exports.getCharactersDB = getCharactersDB;
+const getCharactersApi = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const characters = yield (0, charactersApi_1.charactersApi)();
+        if (!characters)
+            throw new Error('Not Found.');
+        res.status(200).json(characters);
+    }
+    catch (error) {
+        res.status(404).json(error);
+    }
+});
+exports.getCharactersApi = getCharactersApi;
 const getCharacter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
@@ -35,7 +48,7 @@ const getCharacter = (req, res) => __awaiter(void 0, void 0, void 0, function* (
                 throw new Error('Bad Request.');
         }
         else {
-            const character = yield (0, characterApi_1.characterApi)(id);
+            character = yield (0, characterApi_1.characterApi)(id);
             if (!character)
                 throw new Error('Bad Request.');
         }

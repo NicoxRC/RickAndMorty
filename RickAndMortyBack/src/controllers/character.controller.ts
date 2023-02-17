@@ -1,10 +1,21 @@
-import { characterApi } from './../services/characterApi';
 import { Request, Response } from 'express';
+import { characterApi } from './../services/characterApi';
 import { Character } from '../models/Character';
+import { charactersApi } from '../services/charactersApi';
 
-export const getCharacters = async (req: Request, res: Response) => {
+export const getCharactersDB = async (req: Request, res: Response) => {
   try {
     const characters = await Character.findAll();
+    if (!characters) throw new Error('Not Found.');
+    res.status(200).json(characters);
+  } catch (error) {
+    res.status(404).json(error);
+  }
+};
+
+export const getCharactersApi = async (req: Request, res: Response) => {
+  try {
+    const characters = await charactersApi();
     if (!characters) throw new Error('Not Found.');
     res.status(200).json(characters);
   } catch (error) {
@@ -22,7 +33,7 @@ export const getCharacter = async (req: Request, res: Response) => {
       character = await Character.findByPk(id);
       if (!character) throw new Error('Bad Request.');
     } else {
-      const character = await characterApi(id);
+      character = await characterApi(id);
       if (!character) throw new Error('Bad Request.');
     }
     res.status(200).json(character);

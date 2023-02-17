@@ -12,17 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.characterApi = void 0;
+exports.charactersApi = void 0;
 const axios_1 = __importDefault(require("axios"));
-const characterApi = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const charactersApi = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(id);
-        const response = yield axios_1.default.get(`https://rickandmortyapi.com/api/character/${id}`);
-        console.log(response.data);
+        const response = yield axios_1.default.get('https://rickandmortyapi.com/api/character');
         return response.data;
     }
     catch (error) {
         return error;
     }
 });
-exports.characterApi = characterApi;
+exports.charactersApi = charactersApi;
