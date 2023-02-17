@@ -10,10 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCharacter = exports.postCharacter = exports.getCharacter = exports.getCharacters = void 0;
+const characterApi_1 = require("./../services/characterApi");
 const Character_1 = require("../models/Character");
 const getCharacters = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const characters = yield Character_1.Character.findAll();
+        if (!characters)
+            throw new Error('Not Found.');
         res.status(200).json(characters);
     }
     catch (error) {
@@ -24,9 +27,18 @@ exports.getCharacters = getCharacters;
 const getCharacter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const character = yield Character_1.Character.findByPk(id);
-        if (!character)
-            throw new Error('Bad Request.');
+        const regex = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+        let character = {};
+        if (regex.test(id)) {
+            character = yield Character_1.Character.findByPk(id);
+            if (!character)
+                throw new Error('Bad Request.');
+        }
+        else {
+            const character = yield (0, characterApi_1.characterApi)(id);
+            if (!character)
+                throw new Error('Bad Request.');
+        }
         res.status(200).json(character);
     }
     catch (error) {
