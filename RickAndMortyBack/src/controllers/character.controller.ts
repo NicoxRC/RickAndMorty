@@ -1,9 +1,11 @@
-import { Character } from '../models/Character';
+import { characterApi } from './../services/characterApi';
 import { Request, Response } from 'express';
+import { Character } from '../models/Character';
 
 export const getCharacters = async (req: Request, res: Response) => {
   try {
     const characters = await Character.findAll();
+    if (!characters) throw new Error('Not Found.');
     res.status(200).json(characters);
   } catch (error) {
     res.status(404).json(error);
@@ -13,8 +15,16 @@ export const getCharacters = async (req: Request, res: Response) => {
 export const getCharacter = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const character = await Character.findByPk(id);
-    if (!character) throw new Error('Bad Request.');
+    const regex =
+      /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+    let character: object = {};
+    if (regex.test(id)) {
+      character = await Character.findByPk(id);
+      if (!character) throw new Error('Bad Request.');
+    } else {
+      const character = await characterApi(id);
+      if (!character) throw new Error('Bad Request.');
+    }
     res.status(200).json(character);
   } catch (error) {
     res.status(404).json(error);
