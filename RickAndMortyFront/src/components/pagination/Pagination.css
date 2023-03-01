@@ -1,0 +1,22 @@
+.containerPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+}
+
+.pagination > li > a {
+  background-color: #212529;
+  color: white;
+  font-size: large;
+  font-weight: bold;
+}
+
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > li > span:focus,
+.pagination > li > span:hover {
+  color: #fffefc;
+  background-color: #2e8842;
+  border-color: #9fca46;
+}

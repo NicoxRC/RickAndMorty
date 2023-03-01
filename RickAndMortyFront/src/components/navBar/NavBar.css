@@ -2,7 +2,6 @@
   display: flex;
   justify-content: space-between;
   align-content: center;
-  border: 1px solid grey;
   padding: 38px;
   background-color: #212529;
 }

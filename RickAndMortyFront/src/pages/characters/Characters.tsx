@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import Cards from '../../components/cards/Cards';
 import NavBar from '../../components/navBar/NavBar';
+import Pagination from '../../components/pagination/Pagination';
 import { getCharactersApi } from '../../slices/characterSlice';
 
-export default function Home() {
+export default function Characters() {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -15,6 +16,7 @@ export default function Home() {
     <div>
       <NavBar />
       <Cards />
+      <Pagination />
     </div>
   );
 }

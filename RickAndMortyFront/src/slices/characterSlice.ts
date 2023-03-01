@@ -9,7 +9,7 @@ export const getCharactersApi: any = createAsyncThunk(
   'characters/getCharacterApi',
   async (_, { dispatch }) => {
     const response = await charactersApi();
-    dispatch(getCharacters(response.results));
+    dispatch(getCharacters(response));
   }
 );
 
@@ -18,7 +18,7 @@ export const characterSlice = createSlice({
   initialState,
   reducers: {
     getCharacters: (state, action) => {
-      state.charactersApi = action.payload;
+      state.charactersApi = action.payload.results;
     },
   },
 });
