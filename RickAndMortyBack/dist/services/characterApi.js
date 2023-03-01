@@ -16,9 +16,7 @@ exports.characterApi = void 0;
 const axios_1 = __importDefault(require("axios"));
 const characterApi = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(id);
         const response = yield axios_1.default.get(`https://rickandmortyapi.com/api/character/${id}`);
-        console.log(response.data);
         return response.data;
     }
     catch (error) {
