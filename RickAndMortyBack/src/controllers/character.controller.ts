@@ -28,7 +28,7 @@ export const getCharacter = async (req: Request, res: Response) => {
     const { id } = req.params;
     const regex =
       /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
-    let character: object = {};
+    let character: object | null;
     if (regex.test(id)) {
       character = await Character.findByPk(id);
       if (!character) throw new Error('Bad Request.');

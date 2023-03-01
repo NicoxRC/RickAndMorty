@@ -41,7 +41,7 @@ const getCharacter = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     try {
         const { id } = req.params;
         const regex = /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
-        let character = {};
+        let character;
         if (regex.test(id)) {
             character = yield Character_1.Character.findByPk(id);
             if (!character)
