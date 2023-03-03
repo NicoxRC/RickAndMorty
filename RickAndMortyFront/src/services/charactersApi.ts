@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-export const charactersApi = async () => {
+export const charactersApi = async (url: string) => {
   try {
-    const response = await axios.get('http://localhost:3001/characters');
+    const response = await axios.get(url);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    return error;
+  }
 };
