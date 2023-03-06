@@ -4,7 +4,6 @@ const express_1 = require("express");
 const character_controller_1 = require("../controllers/character.controller");
 const router = (0, express_1.Router)();
 router.get('/charactersdb', character_controller_1.getCharactersDB);
-router.get('/characters', character_controller_1.getCharactersApi);
 router.post('/characters', character_controller_1.postCharacter);
 router.get('/characters/:id', character_controller_1.getCharacter);
 router.delete('/characters/:id', character_controller_1.deleteCharacter);
