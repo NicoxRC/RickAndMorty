@@ -9,10 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCharacter = exports.postCharacter = exports.getCharacter = exports.getCharactersApi = exports.getCharactersDB = void 0;
+exports.deleteCharacter = exports.postCharacter = exports.getCharacter = exports.getCharactersDB = void 0;
 const characterApi_1 = require("./../services/characterApi");
 const Character_1 = require("../models/Character");
-const charactersApi_1 = require("../services/charactersApi");
 const getCharactersDB = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const characters = yield Character_1.Character.findAll();
@@ -25,18 +24,6 @@ const getCharactersDB = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getCharactersDB = getCharactersDB;
-const getCharactersApi = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const characters = yield (0, charactersApi_1.charactersApi)();
-        if (!characters)
-            throw new Error('Not Found.');
-        res.status(200).json(characters);
-    }
-    catch (error) {
-        res.status(404).json(error);
-    }
-});
-exports.getCharactersApi = getCharactersApi;
 const getCharacter = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

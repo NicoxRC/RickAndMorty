@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import Home from './pages/home/Home';
+import Characters from './pages/characters/Characters';
 import CharacterDetails from './pages/characterDetails/characterDetails';
 import NewCharacter from './pages/newCharacter/NewCharacter';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -9,7 +9,7 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Characters />} />
         <Route path="/details" element={<CharacterDetails />} />
         <Route path="/newCharacter" element={<NewCharacter />} />
       </Routes>
