@@ -79,20 +79,18 @@ export default function Pagination() {
       <ul className="pagination pagination-lg mt-3">
         {currentPage !== 1 ? (
           <li className="page-item">
-            <a
+            <button
               className="page-link"
-              href="#"
               aria-label="Previous"
               onClick={() => handlePage(1)}
             >
               <span>Primero</span>
-            </a>
+            </button>
           </li>
         ) : null}
         <li className="page-item">
-          <a
+          <button
             className="page-link"
-            href="#"
             aria-label="Previous"
             onClick={() =>
               handlePrevPage(
@@ -101,27 +99,25 @@ export default function Pagination() {
             }
           >
             <span aria-hidden="true">&laquo;</span>
-          </a>
+          </button>
         </li>
         {showPages.map((el) => (
           <li
             className={el === currentPage ? 'page-item active' : 'page-item'}
             key={el}
           >
-            <a
+            <button
               onClick={() => handlePage(el)}
               className="page-link"
-              href="#"
               style={{ cursor: 'pointer' }}
             >
               {el}
-            </a>
+            </button>
           </li>
         ))}
         <li className="page-item">
-          <a
+          <button
             className="page-link"
-            href="#"
             aria-label="Next"
             onClick={() =>
               handleNextPage(
@@ -130,18 +126,17 @@ export default function Pagination() {
             }
           >
             <span aria-hidden="true">&raquo;</span>
-          </a>
+          </button>
         </li>
         {currentPage !== Math.max(...index) ? (
           <li className="page-item">
-            <a
+            <button
               className="page-link"
-              href="#"
               aria-label="Next"
               onClick={() => handlePage(Math.max(...index))}
             >
               <span>Ultimo</span>
-            </a>
+            </button>
           </li>
         ) : null}
       </ul>

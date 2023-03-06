@@ -5,16 +5,16 @@
   padding: 20px 0px;
 }
 
-.pagination > li > a {
+.pagination > li > button {
   background-color: #212529;
   color: white;
   font-size: large;
   font-weight: bold;
 }
 
-.pagination > li > a:focus,
-.pagination > li > a:hover,
-.pagination > li > a:active,
+.pagination > li > button:focus,
+.pagination > li > button:hover,
+.pagination > li > button:active,
 .pagination > li > span:focus,
 .pagination > li > span:hover {
   color: #fffefc;
