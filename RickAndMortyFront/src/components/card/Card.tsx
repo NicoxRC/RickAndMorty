@@ -1,5 +1,7 @@
-export default function Card(props: any) {
-  const { id, name, status, origin, image } = props;
+import { CardInterface } from '../../utils/cardInterface';
+
+export default function Card(props: CardInterface) {
+  const { name, status, origin, image } = props;
 
   return (
     <div className="card text-bg-dark" style={{ width: '25rem' }}>
@@ -10,7 +12,7 @@ export default function Card(props: any) {
           <b>Status:</b> {status}
         </p>
         <p className="card-text">
-          <b>Origin:</b> {origin}
+          <b>Origin:</b> {origin.name}
         </p>
         <a href="#" className="btn btn-success">
           Go somewhere
