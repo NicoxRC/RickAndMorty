@@ -16,7 +16,7 @@ export default function Pagination() {
   const [pages, setPages] = useState(0);
 
   let index: number[] = [];
-  let showPages: any[] = [];
+  let showPages: number[] = [];
 
   useEffect(() => {
     const url = currentPageUrl;
