@@ -14,9 +14,7 @@ export default function Card(props: CardInterface) {
         <p className="card-text">
           <b>Origin:</b> {origin.name}
         </p>
-        <a href="#" className="btn btn-success">
-          Go somewhere
-        </a>
+        <button className="btn btn-success">Go somewhere</button>
       </div>
     </div>
   );
