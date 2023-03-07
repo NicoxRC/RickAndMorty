@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  charactersApi: [],
+  characters: [],
 };
 
 export const characterSlice = createSlice({
@@ -9,7 +9,7 @@ export const characterSlice = createSlice({
   initialState,
   reducers: {
     showCharacters: (state, action) => {
-      state.charactersApi = action.payload;
+      state.characters = action.payload;
     },
   },
 });

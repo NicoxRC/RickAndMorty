@@ -3,9 +3,7 @@ import { CardInterface } from '../../utils/cardInterface';
 import Card from '../card/Card';
 import './Cards.css';
 export default function Cards() {
-  const characters = useSelector(
-    (state: any) => state.characters.charactersApi
-  );
+  const characters = useSelector((state: any) => state.characters.characters);
 
   return (
     <div className="card_container">
