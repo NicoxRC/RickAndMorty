@@ -2,24 +2,25 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { charactersApi } from '../../services/charactersApi';
 import { showCharacters } from '../../slices/characterSlice';
+import { characterInterface } from '../../utils/characterInterface';
 import './Pagination.css';
 
 export default function Pagination() {
   const dispatch = useDispatch();
-  const [characters, setCharacters] = useState([]);
-  const [currentPageUrl, setCurrentPageUrl] = useState(
+  const [characters, setCharacters] = useState<characterInterface[]>([]);
+  const [currentPageUrl, setCurrentPageUrl] = useState<string>(
     'https://rickandmortyapi.com/api/character'
   );
-  const [currentPage, setCurrentPage] = useState(1);
-  const [nextPageUrl, setNextPageUrl] = useState();
-  const [prevPageUrl, setPrevPageUrl] = useState();
-  const [pages, setPages] = useState(0);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [nextPageUrl, setNextPageUrl] = useState<string>();
+  const [prevPageUrl, setPrevPageUrl] = useState<string>();
+  const [pages, setPages] = useState<number>(0);
 
   let index: number[] = [];
   let showPages: number[] = [];
 
   useEffect(() => {
-    const url = currentPageUrl;
+    const url: string = currentPageUrl;
     (async () => {
       const res = await charactersApi(url);
       setCharacters(res.results);
@@ -57,19 +58,21 @@ export default function Pagination() {
     }
   }
 
-  const handleNextPage = (num: number) => {
+  const handleNextPage = (num: number): void => {
     if (nextPageUrl) {
       setCurrentPageUrl(nextPageUrl);
     }
     setCurrentPage(num);
   };
-  const handlePrevPage = (num: number) => {
+
+  const handlePrevPage = (num: number): void => {
     if (prevPageUrl) {
       setCurrentPageUrl(prevPageUrl);
     }
     setCurrentPage(num);
   };
-  const handlePage = (num: number) => {
+
+  const handlePage = (num: number): void => {
     setCurrentPageUrl(`https://rickandmortyapi.com/api/character?page=${num}`);
     setCurrentPage(num);
   };

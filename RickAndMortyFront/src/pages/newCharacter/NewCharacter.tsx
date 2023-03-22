@@ -1,6 +1,3 @@
-
-export default function NewCharacter() {
-  return (
-    <div>NewCharacter</div>
-  )
+export default function NewCharacter(): JSX.Element {
+  return <div>NewCharacter</div>;
 }

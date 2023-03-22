@@ -1,13 +1,13 @@
 import './NavBar.css';
 
-export default function NavBar() {
+export default function NavBar(): JSX.Element {
   return (
     <nav className="navBar">
       <img src="logo" alt="logo" />
       <div>
         <p>Name</p>
       </div>
-      <div className='navProfile'>
+      <div className="navProfile">
         <div>
           <p>Characters</p>
         </div>

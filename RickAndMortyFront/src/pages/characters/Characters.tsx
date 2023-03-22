@@ -3,7 +3,7 @@ import NavBar from '../../components/navBar/NavBar';
 import Pagination from '../../components/pagination/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 
-export default function Characters() {
+export default function Characters(): JSX.Element {
   return (
     <div>
       <NavBar />
