@@ -1,9 +1,14 @@
+import type { RootState } from '../../app/store';
+import type { characterInterface } from '../../utils/characterInterface';
 import { useSelector } from 'react-redux';
 import { CardInterface } from '../../utils/cardInterface';
 import Card from '../card/Card';
 import './Cards.css';
-export default function Cards() {
-  const characters = useSelector((state: any) => state.characters.characters);
+
+export default function Cards(): JSX.Element {
+  const characters = useSelector<RootState, characterInterface[]>(
+    (state) => state.characters.characters
+  );
 
   return (
     <div className="card_container">

@@ -1,5 +1,3 @@
-export default function characterDetails() {
-  return (
-    <div>characterDetails</div>
-  )
+export default function characterDetails(): JSX.Element {
+  return <div>characterDetails</div>;
 }

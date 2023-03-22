@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { characterApiName } from '../../services/charactersApiName';
 import { showCharacters } from '../../slices/characterSlice';
 
-export default function SearchBar() {
+export default function SearchBar(): JSX.Element {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
+  const [name, setName] = useState<string>('');
 
   const handleSearchInput = async (e: React.FormEvent<HTMLInputElement>) => {
     setName(e.currentTarget.value);

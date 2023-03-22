@@ -1,17 +1,11 @@
 import axios from 'axios';
 
-export const characterApiName = async (name: unknown) => {
-  console.log(name);
-
+export const characterApiName = async (name: string) => {
   try {
-    if (typeof name === 'string') {
-      console.log(name);
-
-      const response = await axios.get(
-        `https://rickandmortyapi.com/api/character/?name=${name}`
-      );
-      return response.data;
-    }
+    const response = await axios.get(
+      `https://rickandmortyapi.com/api/character/?name=${name}`
+    );
+    return response.data;
   } catch (error) {
     return error;
   }

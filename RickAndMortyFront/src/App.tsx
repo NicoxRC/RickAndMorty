@@ -5,7 +5,7 @@ import NewCharacter from './pages/newCharacter/NewCharacter';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 
-function App() {
+function App(): JSX.Element {
   return (
     <div className="App">
       <Routes>
