@@ -1,16 +1,18 @@
+import type { RootState } from '../../app/store';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { charactersApi } from '../../services/charactersApi';
 import { showCharacters } from '../../slices/characterSlice';
 import { characterInterface } from '../../utils/characterInterface';
+import { url } from '../../slices/paginationSlice';
 import './Pagination.css';
 
-export default function Pagination() {
+export default function Pagination(): JSX.Element {
   const dispatch = useDispatch();
-  const [characters, setCharacters] = useState<characterInterface[]>([]);
-  const [currentPageUrl, setCurrentPageUrl] = useState<string>(
-    'https://rickandmortyapi.com/api/character'
+  const currentUrl = useSelector<RootState, string>(
+    (state) => state.pagination.currentPageUrl
   );
+  const [characters, setCharacters] = useState<characterInterface[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [nextPageUrl, setNextPageUrl] = useState<string>();
   const [prevPageUrl, setPrevPageUrl] = useState<string>();
@@ -20,15 +22,14 @@ export default function Pagination() {
   let showPages: number[] = [];
 
   useEffect(() => {
-    const url: string = currentPageUrl;
     (async () => {
-      const res = await charactersApi(url);
+      const res = await charactersApi(currentUrl);
       setCharacters(res.results);
       setNextPageUrl(res.info.next);
       setPrevPageUrl(res.info.prev);
       setPages(res.info.pages);
     })();
-  }, [currentPageUrl]);
+  }, [currentUrl]);
 
   useEffect(() => {
     dispatch(showCharacters(characters));
@@ -39,7 +40,7 @@ export default function Pagination() {
   }
 
   if (index.length <= 1) {
-    return null;
+    return <></>;
   } else if (index.length === 2) {
     currentPage === 1
       ? (showPages = [currentPage, currentPage + 1])
@@ -60,20 +61,20 @@ export default function Pagination() {
 
   const handleNextPage = (num: number): void => {
     if (nextPageUrl) {
-      setCurrentPageUrl(nextPageUrl);
+      dispatch(url(nextPageUrl));
     }
     setCurrentPage(num);
   };
 
   const handlePrevPage = (num: number): void => {
     if (prevPageUrl) {
-      setCurrentPageUrl(prevPageUrl);
+      dispatch(url(prevPageUrl));
     }
     setCurrentPage(num);
   };
 
   const handlePage = (num: number): void => {
-    setCurrentPageUrl(`https://rickandmortyapi.com/api/character?page=${num}`);
+    dispatch(url(`https://rickandmortyapi.com/api/character?page=${num}`));
     setCurrentPage(num);
   };
 

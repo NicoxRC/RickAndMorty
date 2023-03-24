@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { characterApiName } from '../../services/charactersApiName';
-import { showCharacters } from '../../slices/characterSlice';
+import { url } from '../../slices/paginationSlice';
 
 export default function SearchBar(): JSX.Element {
   const dispatch = useDispatch();
@@ -13,9 +13,9 @@ export default function SearchBar(): JSX.Element {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const response = await characterApiName(name);
-    if (response?.results.length > 0) {
-      dispatch(showCharacters(response.results));
+    const res = await characterApiName(name);
+    if (typeof res === 'string') {
+      dispatch(url(res));
     }
   };
 
