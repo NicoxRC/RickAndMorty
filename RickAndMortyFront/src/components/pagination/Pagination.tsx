@@ -5,6 +5,7 @@ import { charactersApi } from '../../services/charactersApi';
 import { showCharacters } from '../../slices/characterSlice';
 import { characterInterface } from '../../utils/characterInterface';
 import { url } from '../../slices/paginationSlice';
+import { setCurrentPage } from '../../slices/paginationSlice';
 import './Pagination.css';
 
 export default function Pagination(): JSX.Element {
@@ -12,8 +13,10 @@ export default function Pagination(): JSX.Element {
   const currentUrl = useSelector<RootState, string>(
     (state) => state.pagination.currentPageUrl
   );
+  const currentPage = useSelector<RootState, number>(
+    (state) => state.pagination.currentPage
+  );
   const [characters, setCharacters] = useState<characterInterface[]>([]);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [nextPageUrl, setNextPageUrl] = useState<string>();
   const [prevPageUrl, setPrevPageUrl] = useState<string>();
   const [pages, setPages] = useState<number>(0);
@@ -35,7 +38,7 @@ export default function Pagination(): JSX.Element {
     dispatch(showCharacters(characters));
   }, [characters, dispatch]);
 
-  for (let i = 1; i <= pages; i++) {
+  for (let i: number = 1; i <= pages; i++) {
     index.push(i);
   }
 
@@ -63,83 +66,51 @@ export default function Pagination(): JSX.Element {
     if (nextPageUrl) {
       dispatch(url(nextPageUrl));
     }
-    setCurrentPage(num);
+    dispatch(setCurrentPage(num));
   };
 
   const handlePrevPage = (num: number): void => {
     if (prevPageUrl) {
       dispatch(url(prevPageUrl));
     }
-    setCurrentPage(num);
-  };
-
-  const handlePage = (num: number): void => {
-    dispatch(url(`https://rickandmortyapi.com/api/character?page=${num}`));
-    setCurrentPage(num);
+    dispatch(setCurrentPage(num));
   };
 
   return (
     <nav className="containerPagination">
       <ul className="pagination pagination-lg mt-3">
-        {currentPage !== 1 ? (
+        {prevPageUrl ? (
           <li className="page-item">
             <button
               className="page-link"
               aria-label="Previous"
-              onClick={() => handlePage(1)}
+              onClick={() =>
+                handlePrevPage(
+                  currentPage === 1 ? Math.max(...index) : currentPage - 1
+                )
+              }
             >
-              <span>Primero</span>
+              <span aria-hidden="true">&laquo;</span>
             </button>
           </li>
         ) : null}
-        <li className="page-item">
-          <button
-            className="page-link"
-            aria-label="Previous"
-            onClick={() =>
-              handlePrevPage(
-                currentPage === 1 ? Math.max(...index) : currentPage - 1
-              )
-            }
-          >
-            <span aria-hidden="true">&laquo;</span>
-          </button>
-        </li>
         {showPages.map((el) => (
-          <li
-            className={el === currentPage ? 'page-item active' : 'page-item'}
-            key={el}
-          >
-            <button
-              onClick={() => handlePage(el)}
-              className="page-link"
-              style={{ cursor: 'pointer' }}
-            >
-              {el}
-            </button>
+          <li className={el === currentPage ? 'active' : 'item'} key={el}>
+            <button className="page-link">{el}</button>
           </li>
         ))}
-        <li className="page-item">
-          <button
-            className="page-link"
-            aria-label="Next"
-            onClick={() =>
-              handleNextPage(
-                Math.max(...index) === currentPage ? 1 : currentPage + 1
-              )
-            }
-          >
-            <span aria-hidden="true">&raquo;</span>
-          </button>
-        </li>
-        {currentPage !== Math.max(...index) ? (
+        {nextPageUrl ? (
           <li className="page-item">
             <button
               className="page-link"
               aria-label="Next"
-              onClick={() => handlePage(Math.max(...index))}
+              onClick={() =>
+                handleNextPage(
+                  Math.max(...index) === currentPage ? 1 : currentPage + 1
+                )
+              }
             >
-              <span>Ultimo</span>
+              <span aria-hidden="true">&raquo;</span>
             </button>
           </li>
         ) : null}
