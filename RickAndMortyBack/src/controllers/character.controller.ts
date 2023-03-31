@@ -2,20 +2,26 @@ import { Request, Response } from 'express';
 import { characterApi } from './../services/characterApi';
 import { Character } from '../models/Character';
 
-export const getCharactersDB = async (req: Request, res: Response) => {
+export const getCharactersDB = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const characters = await Character.findAll();
     if (!characters) throw new Error('Not Found.');
     res.status(200).json(characters);
-  } catch (error) {
-    res.status(404).json(error);
+  } catch (error: any) {
+    res.status(404).json(error.message);
   }
 };
 
-export const getCharacter = async (req: Request, res: Response) => {
+export const getCharacter = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { id } = req.params;
-    const regex =
+    const regex: RegExp =
       /^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
     let character: object | null;
     if (regex.test(id)) {
@@ -31,7 +37,10 @@ export const getCharacter = async (req: Request, res: Response) => {
   }
 };
 
-export const postCharacter = async (req: Request, res: Response) => {
+export const postCharacter = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { name, status, species, type, gender, image } = req.body;
     if (!name || !status || !species || !gender)
@@ -50,7 +59,10 @@ export const postCharacter = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteCharacter = async (req: Request, res: Response) => {
+export const deleteCharacter = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const { id } = req.params;
     const character = await Character.findByPk(id);

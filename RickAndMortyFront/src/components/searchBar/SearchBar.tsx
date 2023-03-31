@@ -7,13 +7,15 @@ export default function SearchBar(): JSX.Element {
   const dispatch = useDispatch();
   const [name, setName] = useState<string>('');
 
-  const handleSearchInput = async (e: React.FormEvent<HTMLInputElement>) => {
+  const handleSearchInput = (e: React.FormEvent<HTMLInputElement>): void => {
     setName(e.currentTarget.value);
   };
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ): Promise<void> => {
     e.preventDefault();
-    const res = await characterApiName(name);
+    const res: string | undefined = await characterApiName(name);
     if (typeof res === 'string') {
       dispatch(url(res));
       dispatch(setCurrentPage(1));

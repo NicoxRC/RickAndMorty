@@ -1,6 +1,6 @@
-import type { CardInterface } from '../../utils/cardInterface';
+import type { CardType } from '../../utils/cardType';
 
-export default function Card(props: CardInterface): JSX.Element {
+export default function Card(props: CardType): JSX.Element {
   const { name, status, origin, image } = props;
 
   return (

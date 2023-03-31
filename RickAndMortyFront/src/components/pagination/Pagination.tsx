@@ -1,12 +1,13 @@
 import type { RootState } from '../../app/store';
+import type { Result } from '../../utils/resultsApiInterface';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { charactersApi } from '../../services/charactersApi';
 import { showCharacters } from '../../slices/characterSlice';
-import { characterInterface } from '../../utils/characterInterface';
 import { url } from '../../slices/paginationSlice';
 import { setCurrentPage } from '../../slices/paginationSlice';
 import './Pagination.css';
+import { RickAndMortyApiInterface } from '../../utils/rickAndMortyApiInterface';
 
 export default function Pagination(): JSX.Element {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ export default function Pagination(): JSX.Element {
   const currentPage = useSelector<RootState, number>(
     (state) => state.pagination.currentPage
   );
-  const [characters, setCharacters] = useState<characterInterface[]>([]);
+  const [characters, setCharacters] = useState<Result[]>([]);
   const [nextPageUrl, setNextPageUrl] = useState<string>();
   const [prevPageUrl, setPrevPageUrl] = useState<string>();
   const [pages, setPages] = useState<number>(0);
@@ -26,7 +27,7 @@ export default function Pagination(): JSX.Element {
 
   useEffect(() => {
     (async () => {
-      const res = await charactersApi(currentUrl);
+      const res: RickAndMortyApiInterface = await charactersApi(currentUrl);
       setCharacters(res.results);
       setNextPageUrl(res.info.next);
       setPrevPageUrl(res.info.prev);

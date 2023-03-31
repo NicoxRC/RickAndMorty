@@ -1,14 +1,17 @@
+import type { RickAndMortyApiInterface } from '../utils/rickAndMortyApiInterface';
 import axios from 'axios';
 
-export const characterApiName = async (name: string): Promise<unknown> => {
+export const characterApiName = async (
+  name: string
+): Promise<string | undefined> => {
   try {
-    const response = await axios.get(
+    const { data } = await axios.get<RickAndMortyApiInterface>(
       `https://rickandmortyapi.com/api/character/?name=${name}`
     );
-    if (response.data) {
+    if (data) {
       return `https://rickandmortyapi.com/api/character/?name=${name}`;
     }
-  } catch (error) {
+  } catch (error: any) {
     return error;
   }
 };
