@@ -6,8 +6,8 @@ import { charactersApi } from '../../services/charactersApi';
 import { showCharacters } from '../../slices/characterSlice';
 import { url } from '../../slices/paginationSlice';
 import { setCurrentPage } from '../../slices/paginationSlice';
-import './Pagination.css';
 import { RickAndMortyApiInterface } from '../../utils/rickAndMortyApiInterface';
+import './Pagination.css';
 
 export default function Pagination(): JSX.Element {
   const dispatch = useDispatch();
