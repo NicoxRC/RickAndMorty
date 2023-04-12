@@ -1,50 +1,62 @@
-import { useState } from 'react';
-import { filters } from '../../utils/filterType';
-import { useDispatch } from 'react-redux';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+import { RootState } from '../../app/store';
+import { filterState } from '../../slices/filterSlice';
+import { filterProps, filtersEnum } from '../../utils/filterType';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { urlFiltered } from '../../slices/paginationSlice';
 
-export default function Filter(filterType: filters): JSX.Element {
+export default function Filter(props: filterProps): JSX.Element {
   const dispatch = useDispatch();
-  const [options, setOptions] = useState<string[]>([]);
+  const filters = useSelector<RootState>((state) => state.filter.filtersType);
 
-  switch (filterType) {
-    case filters.Gender:
-      setOptions(['Female', 'Male', 'Genderless', 'Unknown']);
+  let options: string[] = [];
+  switch (props.filterType) {
+    case filtersEnum.Gender:
+      options = ['Female', 'Male', 'Genderless', 'Unknown'];
       break;
-    case filters.Status:
-      setOptions(['Alive', 'Dead', 'Unknown']);
+    case filtersEnum.Status:
+      options = ['Alive', 'Dead', 'Unknown'];
       break;
-    case filters.Species:
-      setOptions(['Human', 'Alien', 'Humanoid', 'Unknown']);
+    case filtersEnum.Species:
+      options = ['Human', 'Alien', 'Humanoid', 'Unknown'];
       break;
-    case filters.Type:
-      setOptions([
+    case filtersEnum.Type:
+      options = [
         'Parasite',
         'Human with antennae',
         'Fish-Person',
         'Cat-Person',
-      ]);
+      ];
       break;
     default:
       break;
   }
 
-  const handleClick = () => {
-    //code
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
+    dispatch(
+      filterState({
+        filter: e.target.value,
+        type: props.filterType.toLowerCase(),
+      })
+    );
   };
 
+  useEffect(() => {
+    dispatch(urlFiltered({ filters }));
+  }, [dispatch, filters]);
+
   return (
-    <div>
-      <DropdownButton id="dropdown-basic-button" title="Dropdown button">
+    <div className="d-flex m-2">
+      <select className="form-select w-100" onChange={handleChange}>
+        <option hidden>{props.filterType}</option>
         {options.length
           ? options.map((el) => (
-              <Dropdown.Item onClick={handleClick}>
-                <button className="btn btn-success">{el}</button>
-              </Dropdown.Item>
+              <option value={el} key={el}>
+                {el}
+              </option>
             ))
           : null}
-      </DropdownButton>
+      </select>
     </div>
   );
 }

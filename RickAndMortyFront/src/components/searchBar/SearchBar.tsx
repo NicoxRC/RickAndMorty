@@ -23,9 +23,9 @@ export default function SearchBar(): JSX.Element {
   };
 
   return (
-    <form className="d-flex w-75 m-2" role="search">
+    <form className="d-flex w-100 m-2" role="search">
       <input
-        className="form-control me-2 w-25"
+        className="form-control me-2 w-100"
         placeholder="Search"
         type="search"
         onChange={handleSearchInput}

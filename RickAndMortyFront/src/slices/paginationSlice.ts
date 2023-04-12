@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { defaultUrl } from '../utils/defaultUrl';
 
 const initialState = {
-  currentPageUrl: 'https://rickandmortyapi.com/api/character',
+  currentPageUrl: defaultUrl,
   currentPage: 1,
 };
 
@@ -12,11 +13,18 @@ export const paginationSlice = createSlice({
     url: (state, action) => {
       state.currentPageUrl = action.payload;
     },
+    urlFiltered: (state, action) => {
+      let filterString: string = '';
+      for (const filter in action.payload.filters) {
+        filterString += `&${filter}=${action.payload.filters[filter]}`;
+      }
+      state.currentPageUrl = defaultUrl + filterString;
+    },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;
     },
   },
 });
 
-export const { url, setCurrentPage } = paginationSlice.actions;
+export const { url, urlFiltered, setCurrentPage } = paginationSlice.actions;
 export default paginationSlice.reducer;
