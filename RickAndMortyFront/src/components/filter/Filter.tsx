@@ -3,11 +3,11 @@ import { filterState } from '../../slices/filterSlice';
 import { filterProps, filtersEnum } from '../../utils/filterType';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { urlFiltered } from '../../slices/paginationSlice';
+import { setCurrentPage, urlFiltered } from '../../slices/paginationSlice';
 
 export default function Filter(props: filterProps): JSX.Element {
   const dispatch = useDispatch();
-  const filters = useSelector<RootState>((state) => state.filter.filtersType);
+  const filters = useSelector<RootState>((state) => state.filter.filterType);
 
   let options: string[] = [];
   switch (props.filterType) {
@@ -35,7 +35,7 @@ export default function Filter(props: filterProps): JSX.Element {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     dispatch(
       filterState({
-        filter: e.target.value,
+        filter: e.target.value.toLowerCase(),
         type: props.filterType.toLowerCase(),
       })
     );
@@ -43,12 +43,13 @@ export default function Filter(props: filterProps): JSX.Element {
 
   useEffect(() => {
     dispatch(urlFiltered({ filters }));
+    dispatch(setCurrentPage(1));
   }, [dispatch, filters]);
 
   return (
     <div className="d-flex m-2">
       <select className="form-select w-100" onChange={handleChange}>
-        <option hidden>{props.filterType}</option>
+        <option value={props.filterType}>{props.filterType}</option>
         {options.length
           ? options.map((el) => (
               <option value={el} key={el}>

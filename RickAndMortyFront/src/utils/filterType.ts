@@ -3,8 +3,8 @@ export type filterProps = {
 };
 
 export enum filtersEnum {
-  Gender = 'Gender',
-  Species = 'Species',
-  Status = 'Status',
-  Type = 'Type',
+  Gender = 'gender',
+  Species = 'species',
+  Status = 'status',
+  Type = 'type',
 }

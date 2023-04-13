@@ -1,18 +1,24 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  filtersType: {},
+  filterType: {},
 };
 
 export const filterSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    filterState: (state, action) => {
-      state.filtersType = {
-        ...state.filtersType,
-        [action.payload.type]: action.payload.filter,
-      };
+    filterState: (state: any, action) => {
+      if (action.payload.type !== action.payload.filter) {
+        state.filterType = {
+          ...state.filterType,
+          [action.payload.type]: action.payload.filter,
+        };
+      } else {
+        if (state.filterType.hasOwnProperty(action.payload.type)) {
+          delete state.filterType[action.payload.type];
+        }
+      }
     },
   },
 });
