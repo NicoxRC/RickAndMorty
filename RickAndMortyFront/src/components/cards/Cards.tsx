@@ -6,7 +6,7 @@ import Card from '../card/Card';
 import './Cards.css';
 
 export default function Cards(): JSX.Element {
-  const characters = useSelector<RootState, Result[]>(
+  const characters: Result[] = useSelector<RootState, Result[]>(
     (state) => state.characters.characters
   );
 
