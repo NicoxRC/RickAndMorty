@@ -4,6 +4,7 @@ import Filter from '../../components/filter/Filter';
 import NavBar from '../../components/navBar/NavBar';
 import Pagination from '../../components/pagination/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
+import Footer from '../../components/footer/Footer';
 
 export default function Characters(): JSX.Element {
   return (
@@ -24,6 +25,7 @@ export default function Characters(): JSX.Element {
       </div>
       <Cards />
       <Pagination />
+      <Footer />
     </div>
   );
 }
