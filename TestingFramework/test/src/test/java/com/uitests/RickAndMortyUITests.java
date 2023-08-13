@@ -1,15 +1,18 @@
 package com.uitests;
 
+import java.time.Duration;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-
-import dev.failsafe.internal.util.Assert;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Unit test for simple App.
@@ -22,24 +25,30 @@ public class RickAndMortyUITests {
 
         // create a new instance of chrome driver
         WebDriver driver = new ChromeDriver();
+        driver.manage().window().maximize();
+        // driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+
+        // Explicit wait 2 seconds
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
         // navigate to google.com
         driver.get("http://localhost:3000/");
 
-        // TODO quitar sleeps y usar waits, y usar asserts mas pros
-        Thread.sleep(2000);
+        WebElement searchBar = driver.findElement(By.xpath("//input[@type='search']"));
+        wait.until(ExpectedConditions.visibilityOf(searchBar));
+        searchBar.sendKeys(expectedName);
 
-        driver.findElement(By.xpath("//input[@type='search']")).sendKeys(expectedName);
+        WebElement searchButton = driver.findElement(By.xpath("//button[contains(text(), 'Search')]"));
+        wait.until(ExpectedConditions.visibilityOf(searchButton));
+        searchButton.click();
 
-        driver.findElement(By.xpath("//button[contains(text(), 'Search')]")).click();
-
-        Thread.sleep(2000);
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class, 'card-title')]")));
         List<WebElement> names = driver.findElements(By.xpath("//h2[contains(@class, 'card-title')]"));
 
-        names.stream().forEach(name -> {
-            Assert.isTrue(name.getText().contains(expectedName), "The name should contain \"" + expectedName + "\"");
-        });
+        Assert.assertTrue(names.size() > 0);
+
+        names.stream().forEach(name -> Assert.assertTrue("The name should contain \"" + expectedName + "\"",
+                name.getText().contains(expectedName)));
         driver.quit();
     }
 
@@ -58,13 +67,15 @@ public class RickAndMortyUITests {
     public void droptdownListsTest() throws InterruptedException {
         String expectedNameOne = "Arthricia";
         String expectedNameTwo = "Defiance Squanchette";
+        int expectedNumberOfCards = 2;
 
         // create a new instance of chrome driver
         WebDriver driver = new ChromeDriver();
         // navigate to google.com
         driver.get("http://localhost:3000/");
 
-        Thread.sleep(2000);
+        // Explicit wait 2 seconds
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
 
         List<WebElement> dropboxes = driver.findElements(By.className("form-select"));
 
@@ -74,37 +85,47 @@ public class RickAndMortyUITests {
         Select typeSelect = new Select(dropboxes.get(3));
 
         genderSelect.selectByValue("Female");
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class, 'card-title')]")));
         speciesSelect.selectByValue("Alien");
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class, 'card-title')]")));
         statusSelect.selectByIndex(1);
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class, 'card-title')]")));
         typeSelect.selectByVisibleText("Cat-Person");
-        Thread.sleep(1000);
+
+        while (true) {
+            try {
+                wait.until(ExpectedConditions
+                        .textToBePresentInElement(
+                                driver.findElement(By.xpath("//h2[contains(@class, 'card-title')]")),
+                                "Arthricia"));
+                break;
+            } catch (TimeoutException e) {
+                System.out.println("Waiting for the element to load...");
+            }
+        }
 
         List<WebElement> cards = driver.findElements(By.xpath("//div[@class='card text-bg-dark']"));
 
-        Assert.isTrue(cards.size() == 2, "There should be 2 cards");
+        Assert.assertEquals("There should be 2 cards", cards.size(), expectedNumberOfCards);
 
         List<WebElement> names = driver.findElements(By.xpath("//h2[contains(@class, 'card-title')]"));
 
-        Assert.isTrue(names.get(0).getText().equals(expectedNameOne),
-                "The first card should have the name " + expectedNameOne);
+        Assert.assertEquals("The first card should have the name: " + expectedNameOne,
+                names.get(0).getText(), expectedNameOne);
 
-        Assert.isTrue(names.get(1).getText().equals(expectedNameTwo),
-                "The second card should have the name " + expectedNameTwo);
+        Assert.assertEquals("The second card should have the name " + expectedNameTwo,
+                names.get(1).getText(), expectedNameTwo);
 
-        Assert.isTrue(
-                driver.findElements(By.xpath("//button[contains(text(), 'Go somewhere')]")).size() == 2,
-                "There should be 2 buttons");
+        Assert.assertEquals("There should be 2 buttons",
+                driver.findElements(By.xpath("//button[contains(text(), 'Go somewhere')]")).size(), 2);
 
         List<WebElement> statuses = driver.findElements(By.className("card-text"));
 
         for (int i = 0; i < statuses.size(); i += 2) {
-            Assert.isTrue(statuses.get(i).getText().contains("Alive"), "The status of the card should be \"Alive\"");
+            Assert.assertTrue("The status of the card should be \"Alive\"",
+                    statuses.get(i).getText().contains("Alive"));
         }
 
-        // driver.close();
         driver.quit();
     }
 }
