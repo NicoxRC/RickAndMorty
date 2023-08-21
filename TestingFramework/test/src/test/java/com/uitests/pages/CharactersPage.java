@@ -119,14 +119,6 @@ public class CharactersPage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(cardTitlesLocator));
     }
 
-    // genderSelect.selectByValue("Female");
-    // wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class, 'card-title')]")));
-    // speciesSelect.selectByValue("Alien");
-    // wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class, 'card-title')]")));
-    // statusSelect.selectByIndex(1);
-    // wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[contains(@class, 'card-title')]")));
-    // typeSelect.selectByVisibleText("Cat-Person");
-
     public int getNumberOfCards() {
         return driver.findElements(cardsLocator).size();
     }
