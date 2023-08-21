@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -98,7 +99,7 @@ public class CardsPage {
         AMIABLE("Amiable", "Amiable"),
         EXCITABLE("Excitable", "Excitable"),
         DETERMINED("Determined", "Determined"),
-        SELF-CONFIDENCE("Self-confidence", "Self-confidence"),
+        SELF_CONFIDENCE("Self-confidence", "Self-confidence"),
         HARDY("Hardy", "Hardy"),
         CALM("Calm", "Calm"),
         GOOD("Good-tempered", "Good-tempered"),
@@ -182,9 +183,52 @@ public class CardsPage {
         searchBar.submit();
     }
 
-    public void selectTemperament(String temperament) {
+    public void selectTemperamentByValue(Temperaments temperament) {
         Select select = new Select(driver.findElement(temperamentsSelectLocator));
+        select.selectByValue(temperament.value);
+    }
 
+    public void selectTemperamentByVisibleText(Temperaments temperament) {
+        Select select = new Select(driver.findElement(temperamentsSelectLocator));
+        select.selectByVisibleText(temperament.visibleText);
+    }
+
+    public void selectTemperamentByIndex(int index) {
+        Select select = new Select(driver.findElement(temperamentsSelectLocator));
+        try {
+            select.selectByIndex(index);
+        } catch (IndexOutOfBoundsException e) {
+            throw new InvalidArgumentException("The temperament is out of bounds");
+        }
+    }
+
+    public void selectTemperamentRandomly() {
+        List<WebElement> options = (new Select(driver.findElement(temperamentsSelectLocator))).getOptions();
+        int randomIndex = (int) (Math.random() * options.size());
+        options.get(randomIndex).click();
+    }
+
+    public void clickNameSortButton() {
+        driver.findElement(nameSortButton).click();
+    }
+
+    public void clickWeightSortButton() {
+        driver.findElement(weightSortButton).click();
+    }
+
+    public void clickCreateDogCardButton() {
+        driver.findElement(createDogCardButton).click();
+    }
+
+    // TODO select using random index, and other case for not using a wrong index
+    public void clickNavigationButton(int index) {
+        getNavigationButtons().get(index).click();
+    }
+
+    private List<WebElement> getNavigationButtons() {
+        if (navigationButtons == null)
+            navigationButtons = driver.findElements(navigationButtonsLocator);
+        return navigationButtons;
     }
 
     // public void waitForCardsUpdate(String expectedText) {
