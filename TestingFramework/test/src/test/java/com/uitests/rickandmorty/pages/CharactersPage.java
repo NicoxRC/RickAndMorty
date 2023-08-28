@@ -1,4 +1,4 @@
-package com.uitests.pages;
+package com.uitests.rickandmorty.pages;
 
 import java.time.Duration;
 import java.util.List;

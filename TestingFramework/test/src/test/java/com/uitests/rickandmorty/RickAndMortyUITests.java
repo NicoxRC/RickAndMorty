@@ -1,4 +1,4 @@
-package com.uitests;
+package com.uitests.rickandmorty;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import com.uitests.pages.CharactersPage;
+import com.uitests.rickandmorty.pages.CharactersPage;
 
 /**
  * Unit test for simple App.

@@ -1,7 +1,8 @@
-package com.dogopediatests.pages;
+package com.uitests.dogopediatests.pages;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.By;
@@ -9,28 +10,30 @@ import org.openqa.selenium.InvalidArgumentException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.dogopediatests.components.Card;
+import com.uitests.dogopediatests.components.DogCard;
 
 public class CardsPage {
     private WebDriver driver;
     WebDriverWait wait;
 
-    private By loadingHearth = By.cssSelector("div[class='spinner_container']");
-    private By searchBarLocator = By.xpath("//input[@name='Search']");
+    final private By loadingHearth = By.cssSelector("div[class='spinner_container']");
+    final private By searchBarLocator = By.xpath("//input[@name='Search']");
     // private By searchButtonLocator = By.xpath("//button[contains(text(), 'Search')]");
-    private By temperamentsSelectLocator = By.xpath("//select[@name='filterByTemperament']");
-    private By nameSortButton = By.cssSelector("img[class='nameImage']");
-    private By weightSortButton = By.cssSelector("img[class='weightImage']");
-    private By createDogCardButton = By.cssSelector("button[class='createButton']");
-    private By navigationButtonsLocator = By.xpath("//div[@class='pagination']/button");
-    private By cardsLocator = By.xpath("//div[@class='card']");
+    final private By temperamentsSelectLocator = By.xpath("//select[@name='filterByTemperament']");
+    final private By nameSortButton = By.cssSelector("img[class='nameImage']");
+    final private By weightSortButton = By.cssSelector("img[class='weightImage']");
+    final private By createDogCardButton = By.cssSelector("button[class='createButton']");
+    final private By navigationButtonsLocator = By.xpath("//div[@class='pagination']/button");
+    final private By cardsLocator = By.xpath("//div[@class='card']");
 
     private List<WebElement> navigationButtons;
-    private List<Card> cards;
+    private List<DogCard> cards;
+    private Select temperamentSelect;
 
     public enum Temperaments {
         ALL("all", "Filter by temperaments"),
@@ -170,8 +173,16 @@ public class CardsPage {
 
     public CardsPage(WebDriver driver) {
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(2));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
+
+    public void waitForPageLoad()  {
+        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(loadingHearth)));
+
+    }
+    // public void waitForCardsToBeVisible() throws InterruptedException {
+    //     wait.until(ExpectedConditions.(cardsLocator));
+    // }
 
     public void searchDog(String text) {
         WebElement searchBar = driver.findElement(searchBarLocator);
@@ -184,17 +195,17 @@ public class CardsPage {
     }
 
     public void selectTemperamentByValue(Temperaments temperament) {
-        Select select = new Select(driver.findElement(temperamentsSelectLocator));
+        Select select = getTemperamentSelect();
         select.selectByValue(temperament.value);
     }
 
     public void selectTemperamentByVisibleText(Temperaments temperament) {
-        Select select = new Select(driver.findElement(temperamentsSelectLocator));
+        Select select = getTemperamentSelect();
         select.selectByVisibleText(temperament.visibleText);
     }
 
     public void selectTemperamentByIndex(int index) {
-        Select select = new Select(driver.findElement(temperamentsSelectLocator));
+        Select select = getTemperamentSelect();
         try {
             select.selectByIndex(index);
         } catch (IndexOutOfBoundsException e) {
@@ -203,9 +214,22 @@ public class CardsPage {
     }
 
     public void selectTemperamentRandomly() {
-        List<WebElement> options = (new Select(driver.findElement(temperamentsSelectLocator))).getOptions();
-        int randomIndex = (int) (Math.random() * options.size());
+        List<WebElement> options = getTemperamentSelect().getOptions();
+        // int randomIndex = (int) (Math.random() * options.size());
+        // same but index 0 ommitted
+        int randomIndex = (int) (Math.random() * (options.size() - 1)) + 1;
         options.get(randomIndex).click();
+    }
+
+    public String getTemperamentValue() {
+        Select select = getTemperamentSelect();
+        return select.getFirstSelectedOption().getText();
+    }
+
+    private Select getTemperamentSelect() {
+        if (temperamentSelect == null)
+            temperamentSelect = new Select(driver.findElement(temperamentsSelectLocator));
+        return temperamentSelect;
     }
 
     public void clickNameSortButton() {
@@ -220,9 +244,23 @@ public class CardsPage {
         driver.findElement(createDogCardButton).click();
     }
 
-    // TODO select using random index, and other case for not using a wrong index
+    public int getAmountOfNavigationButtons() {
+        return getNavigationButtons().size();
+    }
+
     public void clickNavigationButton(int index) {
-        getNavigationButtons().get(index).click();
+        try {
+            getNavigationButtons().get(index).click();
+        } catch (IndexOutOfBoundsException e) {
+            throw new InvalidArgumentException("The index is out of bounds");
+        }
+    }
+
+    public void clickNavigationButtonRandomly() {
+        int size = getNavigationButtons().size();
+        Random random = new Random();
+        int randomIndex = random.nextInt(size);
+        getNavigationButtons().get(randomIndex).click();
     }
 
     private List<WebElement> getNavigationButtons() {
@@ -252,7 +290,23 @@ public class CardsPage {
     //     wait.until(ExpectedConditions.visibilityOfElementLocated(cardTitlesLocator));
     // }
 
-    public int getNumberOfCards() {
-        return driver.findElements(cardsLocator).size();
+    public List<DogCard> getAllDogCards() {
+        if (cards == null)
+            cards = driver.findElements(cardsLocator)
+                    .stream()
+                    .map(card -> new DogCard(card, driver))
+                    .collect(Collectors.toList());
+        return cards;
+    }
+
+    public DogCard getRandomDogCart() {
+        List<DogCard> cards = getAllDogCards();
+        Random random = new Random();
+        int randomIndex = random.nextInt(cards.size());
+        return cards.get(randomIndex);
+    }
+
+    public int getNumberOfDogCards() {
+        return getAllDogCards().size();
     }
 }
