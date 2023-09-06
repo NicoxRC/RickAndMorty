@@ -1,9 +1,10 @@
+import RickAndMortyLogo from '../../images/rickandmorty.png';
 import './NavBar.css';
 
 export default function NavBar(): JSX.Element {
   return (
     <nav className="navBar">
-      <img src="logo" alt="logo" />
+      <img src={RickAndMortyLogo} alt="logo" />
       <div>
         <p>Name</p>
       </div>
