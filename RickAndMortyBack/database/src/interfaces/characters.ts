@@ -1,6 +1,6 @@
-import type { Types } from 'mongoose';
+import type { Document, Types } from 'mongoose';
 
-export interface charactersInterface {
+export interface charactersInterface extends Document {
   _id: number;
   name: string;
   status: string;
@@ -10,5 +10,5 @@ export interface charactersInterface {
   image: string;
   origin: Types.ObjectId;
   location: Types.ObjectId;
-  epidose: Types.ObjectId[];
+  episode: Types.ObjectId[];
 }
