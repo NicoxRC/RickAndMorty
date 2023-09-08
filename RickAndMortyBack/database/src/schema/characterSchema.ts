@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
-import type { charactersInterface } from '../interfaces/characters';
+import type { CharactersInterface } from '../interfaces/characters';
 
-export const characterSchema = new Schema<charactersInterface>({
+export const characterSchema = new Schema<CharactersInterface>({
   _id: { type: Number, required: true },
   name: { type: String, required: true },
   status: { type: String, required: true },
@@ -9,7 +9,7 @@ export const characterSchema = new Schema<charactersInterface>({
   type: { type: String, required: true },
   gender: { type: String, required: true },
   image: { type: String, required: true },
-  // origin: { id: Number, ref: 'Locaktion' },
-  // location: { id: Number, ref: 'Location' },
-  // episode: [{ type: Number, ref: 'Episode' }],
+  origin: [{ type: Number, ref: 'Location' }],
+  location: [{ type: Number, ref: 'Location' }],
+  episode: [{ type: Number, ref: 'Episode' }],
 });

@@ -16,9 +16,9 @@ exports.charactersList = void 0;
 const connection_1 = __importDefault(require("../connection"));
 const charactersList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield connection_1.default.Character.find();
-        // .populate('origin', ['_id', 'name'])
-        // .populate('location', ['_id', 'name'])
+        const response = yield connection_1.default.Character.find()
+            .populate('origin', ['_id', 'name'])
+            .populate('location', ['_id', 'name']);
         // .populate('episode', ['_id', 'name']);
         res.status(200).json(response);
     }

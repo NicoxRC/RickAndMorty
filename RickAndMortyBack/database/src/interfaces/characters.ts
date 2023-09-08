@@ -1,6 +1,6 @@
 import type { Document, Types } from 'mongoose';
 
-export interface charactersInterface extends Document {
+export interface CharactersInterface extends Document {
   _id: number;
   name: string;
   status: string;
