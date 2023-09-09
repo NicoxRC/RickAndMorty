@@ -1,16 +1,14 @@
 import connection from '../connection';
 import type { Request, Response } from 'express';
-import type { CharactersInterface } from '../interfaces/characters';
+import type { LocationsInterface } from '../interfaces/locations';
 
-export const charactersList = async (
+export const locationsList = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const response: CharactersInterface[] = await connection.Character.find()
-      .populate('origin', ['_id', 'name'])
-      .populate('location', ['_id', 'name']);
-    // .populate('episode', ['_id', 'name']);
+    const response: LocationsInterface[] =
+      await connection.Location.find().populate('residents', ['_id', 'name']);
 
     res.status(200).json(response);
   } catch (error: unknown) {
