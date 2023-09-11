@@ -12,14 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.character = exports.charactersList = void 0;
+exports.episode = exports.epidosesList = void 0;
 const connection_1 = __importDefault(require("../connection"));
-const charactersList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const epidosesList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield connection_1.default.Character.find()
-            .populate('origin', ['_id', 'name'])
-            .populate('location', ['_id', 'name'])
-            .populate('episode', ['_id', 'name']);
+        const response = yield connection_1.default.Episode.find().populate('characters', ['_id', 'name']);
         res.status(200).json(response);
     }
     catch (error) {
@@ -28,14 +25,11 @@ const charactersList = (req, res) => __awaiter(void 0, void 0, void 0, function*
             : null;
     }
 });
-exports.charactersList = charactersList;
-const character = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+exports.epidosesList = epidosesList;
+const episode = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const response = yield connection_1.default.Character.findById(id)
-            .populate('origin', ['_id', 'name'])
-            .populate('location', ['_id', 'name'])
-            .populate('episode', ['_id', 'name']);
+        const response = yield connection_1.default.Episode.findById(id).populate('characters', ['_id', 'name']);
         res.status(200).json(response);
     }
     catch (error) {
@@ -44,4 +38,4 @@ const character = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             : null;
     }
 });
-exports.character = character;
+exports.episode = episode;

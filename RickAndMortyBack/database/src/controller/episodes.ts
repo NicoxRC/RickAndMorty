@@ -1,14 +1,14 @@
 import connection from '../connection';
 import type { Request, Response } from 'express';
-import type { LocationsInterface } from '../interfaces/locations';
+import type { EpisodesInterface } from '../interfaces/episodes';
 
-export const locationsList = async (
+export const epidosesList = async (
   req: Request,
   res: Response
 ): Promise<void> => {
   try {
-    const response: LocationsInterface[] =
-      await connection.Location.find().populate('residents', ['_id', 'name']);
+    const response: EpisodesInterface[] =
+      await connection.Episode.find().populate('characters', ['_id', 'name']);
 
     res.status(200).json(response);
   } catch (error: unknown) {
@@ -18,11 +18,11 @@ export const locationsList = async (
   }
 };
 
-export const location = async (req: Request, res: Response): Promise<void> => {
+export const episode = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const response = await connection.Location.findById(id).populate(
-      'residents',
+    const response = await connection.Episode.findById(id).populate(
+      'characters',
       ['_id', 'name']
     );
 
