@@ -16,10 +16,7 @@ exports.character = exports.charactersList = void 0;
 const connection_1 = __importDefault(require("../connection"));
 const charactersList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield connection_1.default.Character.find()
-            .populate('origin', ['_id', 'name'])
-            .populate('location', ['_id', 'name'])
-            .populate('episode', ['_id', 'name']);
+        const response = yield connection_1.default.Character.find().populate('origin', ['_id', 'name']);
         res.status(200).json(response);
     }
     catch (error) {
@@ -34,8 +31,7 @@ const character = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { id } = req.params;
         const response = yield connection_1.default.Character.findById(id)
             .populate('origin', ['_id', 'name'])
-            .populate('location', ['_id', 'name'])
-            .populate('episode', ['_id', 'name']);
+            .populate('location', ['_id', 'name']);
         res.status(200).json(response);
     }
     catch (error) {
