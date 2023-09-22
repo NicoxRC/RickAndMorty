@@ -7,10 +7,8 @@ export const charactersList = async (
   res: Response
 ): Promise<void> => {
   try {
-    const response: CharactersInterface[] = await connection.Character.find()
-      .populate('origin', ['_id', 'name'])
-      .populate('location', ['_id', 'name'])
-      .populate('episode', ['_id', 'name']);
+    const response: CharactersInterface[] =
+      await connection.Character.find().populate('origin', ['_id', 'name']);
 
     res.status(200).json(response);
   } catch (error: unknown) {
@@ -25,8 +23,7 @@ export const character = async (req: Request, res: Response): Promise<void> => {
     const { id } = req.params;
     const response = await connection.Character.findById(id)
       .populate('origin', ['_id', 'name'])
-      .populate('location', ['_id', 'name'])
-      .populate('episode', ['_id', 'name']);
+      .populate('location', ['_id', 'name']);
 
     res.status(200).json(response);
   } catch (error: unknown) {
