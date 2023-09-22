@@ -3,9 +3,10 @@ import type { Request, Response } from 'express';
 import type { CharactersInterface } from '../interfaces/characters';
 
 export = async (req: Request, res: Response): Promise<void> => {
+  const { id } = req.params;
   try {
-    const { data } = await axios.get<CharactersInterface[]>(
-      'http://localhost:3004/characters'
+    const { data } = await axios.get<CharactersInterface>(
+      `http://localhost:3004/characters/${id}`
     );
     res.status(200).json(data);
   } catch (error: unknown) {

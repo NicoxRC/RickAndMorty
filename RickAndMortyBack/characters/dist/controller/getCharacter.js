@@ -13,8 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 const axios_1 = __importDefault(require("axios"));
 module.exports = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
     try {
-        const { data } = yield axios_1.default.get('http://localhost:3004/characters');
+        const { data } = yield axios_1.default.get(`http://localhost:3004/characters/${id}`);
         res.status(200).json(data);
     }
     catch (error) {
