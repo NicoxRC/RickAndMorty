@@ -1,6 +1,7 @@
 package com.uitests.dogopediatests;
 
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -56,7 +57,10 @@ public class DogoPediaUITests {
 
         Assert.assertEquals(card.getSavedDogName(), detailsPage.getDogName());
         Assert.assertEquals(card.getSavedDogWeight(), detailsPage.getDogWeight());
-        Assert.assertEquals(card.getSavedDogTemperament(), detailsPage.getDogTemperament());
+        // Assert.assertEquals(card.getSavedDogTemperament(), detailsPage.getDogTemperament());
+        assertThat(card.getSavedDogTemperament())
+                .describedAs("The temperament of the dog is not as expected")
+                .isEqualTo(detailsPage.getDogTemperament());
     }
 
     @Test
@@ -72,7 +76,7 @@ public class DogoPediaUITests {
             for (int i = 0; i < NumberOfPages; i++) {
                 CardsPage navigationCardsPage = new CardsPage(driver);
                 navigationCardsPage.clickNavigationButton(i);
-                
+
                 List<DogCard> cards = navigationCardsPage.getAllDogCards();
                 cards.forEach(card -> {
                     softly.assertThat(card.getDogTemperament())
