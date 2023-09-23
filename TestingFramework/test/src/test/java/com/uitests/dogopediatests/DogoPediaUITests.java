@@ -50,10 +50,9 @@ public class DogoPediaUITests {
 
         DogCard card = cardsPage.getRandomDogCart();
         card.saveDogInfo();
-        card.clickCard();
 
-        CardDetailsPage detailsPage = new CardDetailsPage(driver);
-        detailsPage.waitForPageLoad();
+        CardDetailsPage detailsPage = card.clickCard(driver)
+                .waitForPageLoad(); 
 
         Assert.assertEquals(card.getSavedDogName(), detailsPage.getDogName());
         Assert.assertEquals(card.getSavedDogWeight(), detailsPage.getDogWeight());

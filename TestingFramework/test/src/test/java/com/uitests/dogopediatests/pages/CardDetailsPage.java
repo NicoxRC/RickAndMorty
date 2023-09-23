@@ -7,7 +7,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class CardDetailsPage {
+import com.uitests.core.Page;
+
+public class CardDetailsPage extends Page {
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -18,12 +20,20 @@ public class CardDetailsPage {
     final private By dogTemperamentLocator = By.xpath("(//div[@class='dog_details_list']/ul/li)[1]");
 
     public CardDetailsPage(WebDriver driver) {
+        super(driver);
         this.driver = driver;
         wait = new WebDriverWait(driver, Duration.ofSeconds(2));
     }
 
-    public void waitForPageLoad() {
+    @Override
+    protected void validatePageLoad() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'validatePageLoad'");
+    }
+
+    public CardDetailsPage waitForPageLoad() {
         wait.until(ExpectedConditions.invisibilityOfElementLocated(loadingHearth));
+        return this;
     }
 
     public void clickBackButton() {
