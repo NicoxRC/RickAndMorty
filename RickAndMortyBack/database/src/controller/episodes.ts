@@ -7,8 +7,7 @@ export const epidosesList = async (
   res: Response
 ): Promise<void> => {
   try {
-    const response: EpisodesInterface[] =
-      await connection.Episode.find().populate('characters', ['_id', 'name']);
+    const response: EpisodesInterface[] = await connection.Episode.find();
 
     res.status(200).json(response);
   } catch (error: unknown) {

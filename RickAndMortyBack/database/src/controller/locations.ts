@@ -7,8 +7,7 @@ export const locationsList = async (
   res: Response
 ): Promise<void> => {
   try {
-    const response: LocationsInterface[] =
-      await connection.Location.find().populate('residents', ['_id', 'name']);
+    const response: LocationsInterface[] = await connection.Location.find();
 
     res.status(200).json(response);
   } catch (error: unknown) {
