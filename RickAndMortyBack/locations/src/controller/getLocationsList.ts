@@ -5,7 +5,7 @@ import type { LocationsInterface } from '../interfaces/locations';
 export = async (req: Request, res: Response): Promise<void> => {
   try {
     const { data } = await axios.get<LocationsInterface[]>(
-      'http://localhost:3004/locations'
+      'http://localhost:3005/locations'
     );
     res.status(200).json(data);
   } catch (error: unknown) {
