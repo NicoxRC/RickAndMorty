@@ -5,7 +5,7 @@ import type { CharactersInterface } from '../interfaces/characters';
 export = async (req: Request, res: Response): Promise<void> => {
   try {
     const { data } = await axios.get<CharactersInterface[]>(
-      'http://localhost:3004/characters'
+      'http://localhost:3005/characters'
     );
     res.status(200).json(data);
   } catch (error: unknown) {

@@ -6,7 +6,7 @@ export = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   try {
     const { data } = await axios.get<CharactersInterface>(
-      `http://localhost:3004/characters/${id}`
+      `http://localhost:3005/characters/${id}`
     );
     res.status(200).json(data);
   } catch (error: unknown) {
