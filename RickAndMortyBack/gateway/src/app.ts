@@ -9,21 +9,21 @@ app.use(morgan('dev'));
 app.use(
   '/characters',
   createProxyMiddleware({
-    target: 'http://localhost:3002',
+    target: 'http://characters:3002',
     changeOrigin: true,
   })
 );
 app.use(
   '/locations',
   createProxyMiddleware({
-    target: 'http://localhost:3003',
+    target: 'http://locations:3003',
     changeOrigin: true,
   })
 );
 app.use(
   '/episodes',
   createProxyMiddleware({
-    target: 'http://localhost:3004',
+    target: 'http://episodes:3004',
     changeOrigin: true,
   })
 );
