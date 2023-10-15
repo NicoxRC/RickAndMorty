@@ -1,0 +1,53 @@
+.containerPagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+}
+
+.page-item > button {
+  background-color: #212529;
+  color: white;
+  font-size: large;
+  font-weight: bold;
+}
+
+.page-item > button:focus,
+.page-item > button:hover,
+.page-item > button:active,
+.page-item > span:focus,
+.page-item > span:hover {
+  color: #fffefc;
+  background-color: #2e8842;
+  border-color: #9fca46;
+}
+
+.item > button {
+  background-color: #212529;
+  color: white;
+  font-size: large;
+  font-weight: bold;
+  cursor: default !important;
+}
+
+.item > button:focus,
+.item > button:hover,
+.item > button:active,
+.item > span:focus,
+.item > span:hover {
+  background-color: #212529;
+  color: white;
+  font-size: large;
+  font-weight: bold;
+}
+
+.active > .page-link {
+  color: #fffefc;
+  background-color: #2e8842 !important;
+  border-color: #9fca46 !important;
+  cursor: default !important;
+}
+
+.active > .page-link:hover {
+  color: #fffefc !important;
+}
