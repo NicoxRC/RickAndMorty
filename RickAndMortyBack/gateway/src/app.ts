@@ -1,11 +1,13 @@
 import express from 'express';
 import morgan from 'morgan';
+import cors from 'cors';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 const app = express();
 
 app.use(express.json());
 app.use(morgan('dev'));
+app.use(cors());
 app.use(
   '/characters',
   createProxyMiddleware({

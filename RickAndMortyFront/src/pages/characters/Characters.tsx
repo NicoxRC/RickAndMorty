@@ -5,8 +5,25 @@ import NavBar from '../../components/navBar/NavBar';
 import Pagination from '../../components/pagination/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Footer from '../../components/footer/Footer';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import type { AppDispatch, RootState } from '../../app/store';
+import { getAllCharacters } from '../../slices/characterSlice';
+import { RickAndMortyApiInterface } from '../../utils/rickAndMortyApiInterface';
 
 export default function Characters(): JSX.Element {
+  const dispatch: AppDispatch = useDispatch();
+  const allCharacters = useSelector<RootState, RickAndMortyApiInterface[]>(
+    (state) => state.characters.characters
+  );
+
+  useEffect(() => {
+    dispatch(getAllCharacters());
+  }, [dispatch]);
+  useEffect(() => {
+    console.log(allCharacters);
+  }, [allCharacters]);
+
   return (
     <div>
       <NavBar />
