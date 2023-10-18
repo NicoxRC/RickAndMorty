@@ -1,10 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getCharactersList } from '../services/characters';
-import type { RickAndMortyApiInterface } from '../utils/rickAndMortyApiInterface';
+import { getCharactersList } from '../services/getCharacters';
+import type { CharactersInterface } from '../interfaces/characters';
 
 interface initialStateInterface {
-  characters: RickAndMortyApiInterface[];
-  showCharacters: RickAndMortyApiInterface[];
+  characters: CharactersInterface[];
+  showCharacters: CharactersInterface[];
 }
 
 const initialState: initialStateInterface = {
@@ -15,7 +15,7 @@ const initialState: initialStateInterface = {
 export const getAllCharacters = createAsyncThunk(
   'characters/getCharacters',
   async (_, { dispatch }) => {
-    const res: RickAndMortyApiInterface[] = await getCharactersList();
+    const res: CharactersInterface[] = await getCharactersList();
     dispatch(allCharacters(res));
   }
 );
@@ -24,16 +24,10 @@ export const characterSlice = createSlice({
   name: 'characters',
   initialState,
   reducers: {
-    allCharacters: (
-      state,
-      action: PayloadAction<RickAndMortyApiInterface[]>
-    ) => {
+    allCharacters: (state, action: PayloadAction<CharactersInterface[]>) => {
       state.characters = action.payload;
     },
-    showCharacters: (
-      state,
-      action: PayloadAction<RickAndMortyApiInterface[]>
-    ) => {
+    showCharacters: (state, action: PayloadAction<CharactersInterface[]>) => {
       state.showCharacters = action.payload;
     },
   },

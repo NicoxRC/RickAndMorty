@@ -1,19 +1,18 @@
-import type { RootState } from '../../app/store';
-import type { Result } from '../../utils/resultsApiInterface';
-import type { CardType } from '../../utils/cardType';
-import { useSelector } from 'react-redux';
 import Card from '../card/Card';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../app/store';
+import type { CardPropsType } from '../../types/card';
+import type { CharactersInterface } from '../../interfaces/characters';
 import './Cards.css';
-import { RickAndMortyApiInterface } from '../../utils/rickAndMortyApiInterface';
 
 export default function Cards(): JSX.Element {
-  const characters = useSelector<RootState, RickAndMortyApiInterface[]>(
+  const characters = useSelector<RootState, CharactersInterface[]>(
     (state) => state.characters.characters
   );
 
   return (
     <div className="card_container">
-      {characters?.map((el: any) => (
+      {characters?.map((el: CardPropsType) => (
         <Card
           key={el.id}
           id={el.id}
