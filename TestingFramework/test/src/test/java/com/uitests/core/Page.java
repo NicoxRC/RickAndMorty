@@ -3,6 +3,7 @@ package com.uitests.core;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +19,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class Page {
     private WebDriver driver;
-    protected WebDriverWait wait;
+    private WebDriverWait wait;
     private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     protected ArrayList<WebElement> singleComponents;
@@ -28,10 +29,14 @@ public abstract class Page {
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
+    protected void changeWaitTime(int seconds) {
+        wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+    }
+
+    protected <T> T waitUntil(final Function<? super WebDriver, T> condition) {
+        return wait.until(condition);
+    }
     
-
-
-
     protected abstract void validatePageLoad();
 
     protected Select selectByValue(By selectLocator, String value) {

@@ -1,17 +1,14 @@
 package com.uitests.dogopediatests.pages;
 
-import java.time.Duration;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.uitests.core.Page;
 
 public class CardDetailsPage extends Page {
     private WebDriver driver;
-    private WebDriverWait wait;
 
     final private By loadingHearth = By.cssSelector("div[class='spinner_container']");
     final private By backButton = By.tagName("button");
@@ -22,7 +19,6 @@ public class CardDetailsPage extends Page {
     public CardDetailsPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(2));
     }
 
     @Override
@@ -32,7 +28,7 @@ public class CardDetailsPage extends Page {
     }
 
     public CardDetailsPage waitForPageLoad() {
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(loadingHearth));
+        waitUntil(ExpectedConditions.invisibilityOfElementLocated(loadingHearth));
         return this;
     }
 
@@ -46,13 +42,13 @@ public class CardDetailsPage extends Page {
 
     public String getDogWeight() {
         return driver.findElement(dogWeightLocator)
-        .getText().replace("\n", "")
-        .split(":")[1].trim();
+                .getText().replace("\n", "")
+                .split(":")[1].trim();
     }
 
     public String getDogTemperament() {
         return driver.findElement(dogTemperamentLocator)
-        .getText().replace("\n", "")
-        .split(":")[1].replace("\"", "").trim();
+                .getText().replace("\n", "")
+                .split(":")[1].replace("\"", "").trim();
     }
 }
