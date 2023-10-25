@@ -1,12 +1,12 @@
-import { RootState } from '../../app/store';
-import { filterState } from '../../slices/filterSlice';
-import { filterProps, filtersEnum } from '../../utils/filterType';
-import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterState } from '../../slices/filterSlice';
 import { setCurrentPage, urlFiltered } from '../../slices/paginationSlice';
+import { filterProps, filtersEnum } from '../../types/filter';
+import type { AppDispatch, RootState } from '../../app/store';
 
 export default function Filter(props: filterProps): JSX.Element {
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const filters = useSelector<RootState>((state) => state.filter.filterType);
 
   let options: string[] = [];
@@ -18,7 +18,7 @@ export default function Filter(props: filterProps): JSX.Element {
       options = ['Alive', 'Dead', 'Unknown'];
       break;
     case filtersEnum.Species:
-      options = ['Human', 'Alien', 'Humanoid', 'Unknown'];
+      options = ['Human', 'Alien', 'Humanoid', 'Cronenberg', 'Unknown'];
       break;
     case filtersEnum.Type:
       options = [
@@ -26,6 +26,7 @@ export default function Filter(props: filterProps): JSX.Element {
         'Human with antennae',
         'Fish-Person',
         'Cat-Person',
+        'Robot',
       ];
       break;
     default:

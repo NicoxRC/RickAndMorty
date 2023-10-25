@@ -1,6 +1,6 @@
-import type { CardType } from '../../utils/cardType';
+import type { CardPropsType } from '../../types/card';
 
-export default function Card(props: CardType): JSX.Element {
+export default function Card(props: CardPropsType): JSX.Element {
   const { name, status, origin, image } = props;
 
   return (
