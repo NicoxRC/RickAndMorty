@@ -1,8 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { defaultUrl } from '../utils/defaultUrl';
 
 const initialState = {
-  currentPageUrl: defaultUrl,
+  currentPageUrl: '',
   currentPage: 1,
 };
 
@@ -18,7 +17,7 @@ export const paginationSlice = createSlice({
       for (const filter in action.payload.filters) {
         filterString += `&${filter}=${action.payload.filters[filter]}`;
       }
-      state.currentPageUrl = defaultUrl + filterString;
+      state.currentPageUrl = '' + filterString;
     },
     setCurrentPage: (state, action) => {
       state.currentPage = action.payload;

@@ -2,25 +2,29 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterState } from '../../slices/filterSlice';
 import { setCurrentPage, urlFiltered } from '../../slices/paginationSlice';
-import { filterProps, filtersEnum } from '../../types/filter';
+import { FilterPropsType, FilterType, FiltersEnum } from '../../types/filter';
 import type { AppDispatch, RootState } from '../../app/store';
+import { CharactersFilter } from '../../slices/characterSlice';
 
-export default function Filter(props: filterProps): JSX.Element {
+export default function Filter(props: FilterPropsType) {
+  const { filterType } = props;
   const dispatch: AppDispatch = useDispatch();
-  const filters = useSelector<RootState>((state) => state.filter.filterType);
+  const filters = useSelector<RootState, FilterType>(
+    (state) => state.filter.filterType
+  );
 
   let options: string[] = [];
-  switch (props.filterType) {
-    case filtersEnum.Gender:
+  switch (filterType) {
+    case FiltersEnum.Gender:
       options = ['Female', 'Male', 'Genderless', 'Unknown'];
       break;
-    case filtersEnum.Status:
+    case FiltersEnum.Status:
       options = ['Alive', 'Dead', 'Unknown'];
       break;
-    case filtersEnum.Species:
+    case FiltersEnum.Species:
       options = ['Human', 'Alien', 'Humanoid', 'Cronenberg', 'Unknown'];
       break;
-    case filtersEnum.Type:
+    case FiltersEnum.Type:
       options = [
         'Parasite',
         'Human with antennae',
@@ -37,20 +41,20 @@ export default function Filter(props: filterProps): JSX.Element {
     dispatch(
       filterState({
         filter: e.target.value.toLowerCase(),
-        type: props.filterType.toLowerCase(),
+        type: filterType.toLowerCase(),
       })
     );
   };
 
   useEffect(() => {
-    dispatch(urlFiltered({ filters }));
+    dispatch(CharactersFilter(filters));
     dispatch(setCurrentPage(1));
   }, [dispatch, filters]);
 
   return (
     <div className="d-flex m-2">
       <select className="form-select w-100" onChange={handleChange}>
-        <option value={props.filterType}>{props.filterType}</option>
+        <option value={filterType}>{filterType}</option>
         {options.length
           ? options.map((el) => (
               <option value={el} key={el}>

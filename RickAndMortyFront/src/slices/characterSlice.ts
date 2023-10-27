@@ -1,15 +1,15 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getCharactersList } from '../services/getCharacters';
-import type { CharactersInterface } from '../interfaces/characters';
+import { getCharactersFilter } from '../services/getCharactersFilter';
+import type {
+  CharactersInterface,
+  InitialStateCharactersInterface,
+} from '../interfaces/characters';
+import type { FilterType } from '../types/filter';
 
-interface initialStateInterface {
-  characters: CharactersInterface[];
-  showCharacters: CharactersInterface[];
-}
-
-const initialState: initialStateInterface = {
+const initialState: InitialStateCharactersInterface = {
   characters: [],
-  showCharacters: [],
+  filterCharacters: [],
 };
 
 export const getAllCharacters = createAsyncThunk(
@@ -20,6 +20,14 @@ export const getAllCharacters = createAsyncThunk(
   }
 );
 
+export const CharactersFilter = createAsyncThunk(
+  'characters/filterCharacters',
+  async (filters: FilterType, { dispatch }) => {
+    const res: CharactersInterface[] = await getCharactersFilter(filters);
+    dispatch(filterCharacters(res));
+  }
+);
+
 export const characterSlice = createSlice({
   name: 'characters',
   initialState,
@@ -27,11 +35,11 @@ export const characterSlice = createSlice({
     allCharacters: (state, action: PayloadAction<CharactersInterface[]>) => {
       state.characters = action.payload;
     },
-    showCharacters: (state, action: PayloadAction<CharactersInterface[]>) => {
-      state.showCharacters = action.payload;
+    filterCharacters: (state, action: PayloadAction<CharactersInterface[]>) => {
+      state.filterCharacters = action.payload;
     },
   },
 });
 
-export const { allCharacters, showCharacters } = characterSlice.actions;
+export const { allCharacters, filterCharacters } = characterSlice.actions;
 export default characterSlice.reducer;
