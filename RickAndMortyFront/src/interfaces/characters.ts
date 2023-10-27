@@ -10,26 +10,29 @@ export interface CharactersInterface {
   location: number[];
   episode: number[];
 }
+export interface InitialStateCharactersInterface {
+  characters: CharactersInterface[];
+  filterCharacters: CharactersInterface[];
+}
 
-export type CharctersOriginType = {
+type CharctersOriginType = {
   id: number;
   name: string;
 };
 
-export enum Gender {
+enum Gender {
   Male = 'Male',
   Female = 'Female',
   Genderless = 'Genderless',
   Unknown = 'Unknown',
 }
-
-export enum Status {
+enum Status {
   Alive = 'Alive',
   Dead = 'Dead',
   Unknown = 'unknown',
 }
 
-export enum Species {
+enum Species {
   Human = 'Human',
   Alien = 'Alien',
   Humanoid = 'Humanoid',
@@ -37,7 +40,7 @@ export enum Species {
   Unknown = 'Unknown',
 }
 
-export enum Type {
+enum Type {
   Empty = '',
   Parasite = 'Parasite',
   HumanWithAntennae = 'Human with antennae',

@@ -1,6 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import type {
+  FilterPayloadType,
+  InitialStateFiltersType,
+} from '../types/filter';
 
-const initialState = {
+const initialState: InitialStateFiltersType = {
   filterType: {},
 };
 
@@ -8,17 +12,11 @@ export const filterSlice = createSlice({
   name: 'filters',
   initialState,
   reducers: {
-    filterState: (state: any, action) => {
-      if (action.payload.type !== action.payload.filter) {
-        state.filterType = {
-          ...state.filterType,
-          [action.payload.type]: action.payload.filter,
-        };
-      } else {
-        if (state.filterType.hasOwnProperty(action.payload.type)) {
-          delete state.filterType[action.payload.type];
-        }
-      }
+    filterState: (state, action: PayloadAction<FilterPayloadType>) => {
+      state.filterType = {
+        ...state.filterType,
+        [action.payload.type]: action.payload.filter,
+      };
     },
   },
 });

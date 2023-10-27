@@ -6,7 +6,7 @@ import Footer from '../../components/footer/Footer';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCharacters } from '../../slices/characterSlice';
-import { filtersEnum } from '../../types/filter';
+import { FiltersEnum } from '../../types/filter';
 import type { AppDispatch, RootState } from '../../app/store';
 import type { CharactersInterface } from '../../interfaces/characters';
 
@@ -19,9 +19,6 @@ export default function Characters(): JSX.Element {
   useEffect(() => {
     dispatch(getAllCharacters());
   }, [dispatch]);
-  useEffect(() => {
-    console.log(allCharacters);
-  }, [allCharacters]);
 
   return (
     <div>
@@ -30,11 +27,11 @@ export default function Characters(): JSX.Element {
           <SearchBar />
         </div>
         <div className="d-flex">
-          <Filter filterType={filtersEnum.Gender} />
-          <Filter filterType={filtersEnum.Species} />
-          <Filter filterType={filtersEnum.Status} />
+          <Filter filterType={FiltersEnum.Gender} />
+          <Filter filterType={FiltersEnum.Species} />
+          <Filter filterType={FiltersEnum.Status} />
           <div className="w-25">
-            <Filter filterType={filtersEnum.Type} />
+            <Filter filterType={FiltersEnum.Type} />
           </div>
         </div>
       </div>
