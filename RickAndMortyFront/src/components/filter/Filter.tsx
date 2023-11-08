@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterState } from '../../slices/filterSlice';
-import { setCurrentPage, urlFiltered } from '../../slices/paginationSlice';
+import { setCurrentPage } from '../../slices/paginationSlice';
+import { CharactersFilter } from '../../slices/characterSlice';
 import { FilterPropsType, FilterType, FiltersEnum } from '../../types/filter';
 import type { AppDispatch, RootState } from '../../app/store';
-import { CharactersFilter } from '../../slices/characterSlice';
 
 export default function Filter(props: FilterPropsType) {
   const { filterType } = props;
@@ -40,8 +40,8 @@ export default function Filter(props: FilterPropsType) {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     dispatch(
       filterState({
-        filter: e.target.value.toLowerCase(),
         type: filterType.toLowerCase(),
+        filter: e.target.value.toLowerCase(),
       })
     );
   };
@@ -56,7 +56,7 @@ export default function Filter(props: FilterPropsType) {
       <select className="form-select w-100" onChange={handleChange}>
         <option value={filterType}>{filterType}</option>
         {options.length
-          ? options.map((el) => (
+          ? options.map((el: string) => (
               <option value={el} key={el}>
                 {el}
               </option>
