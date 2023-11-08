@@ -6,13 +6,13 @@ import type { CharactersInterface } from '../../interfaces/characters';
 import './Cards.css';
 
 export default function Cards(): JSX.Element {
-  const characters = useSelector<RootState, CharactersInterface[]>(
-    (state) => state.characters.characters
+  const showCharacters = useSelector<RootState, CharactersInterface[]>(
+    (state) => state.characters.showCharacters
   );
 
   return (
     <div className="card_container">
-      {characters?.map((el: CardPropsType) => (
+      {showCharacters?.map((el: CardPropsType) => (
         <Card
           key={el.id}
           id={el.id}

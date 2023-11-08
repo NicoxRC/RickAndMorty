@@ -4,17 +4,13 @@ import Pagination from '../../components/pagination/Pagination';
 import SearchBar from '../../components/searchBar/SearchBar';
 import Footer from '../../components/footer/Footer';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { getAllCharacters } from '../../slices/characterSlice';
 import { FiltersEnum } from '../../types/filter';
-import type { AppDispatch, RootState } from '../../app/store';
-import type { CharactersInterface } from '../../interfaces/characters';
+import type { AppDispatch } from '../../app/store';
 
 export default function Characters(): JSX.Element {
   const dispatch: AppDispatch = useDispatch();
-  const allCharacters = useSelector<RootState, CharactersInterface[]>(
-    (state) => state.characters.characters
-  );
 
   useEffect(() => {
     dispatch(getAllCharacters());

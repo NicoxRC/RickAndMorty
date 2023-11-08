@@ -10,6 +10,7 @@ export const getCharactersFilter = async (
     const { data } = await axios.get<CharactersInterface[]>(
       `/characters?${params}`
     );
+
     return data;
   } catch (error: unknown) {
     if (error instanceof TypeError) {

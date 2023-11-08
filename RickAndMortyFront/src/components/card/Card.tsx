@@ -12,7 +12,7 @@ export default function Card(props: CardPropsType): JSX.Element {
           <b>Status:</b> {status}
         </p>
         <p className="card-text">
-          <b>Origin:</b> {origin.name}
+          <b>Origin:</b> {origin ? origin[0].name : 'unknown'}
         </p>
         <button className="btn btn-success">Go somewhere</button>
       </div>
