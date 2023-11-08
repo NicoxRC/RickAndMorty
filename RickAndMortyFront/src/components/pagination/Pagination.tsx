@@ -1,25 +1,46 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { url } from '../../slices/paginationSlice';
 import { setCurrentPage } from '../../slices/paginationSlice';
 import type { RootState } from '../../app/store';
+import type { CharactersInterface } from '../../interfaces/characters';
 import './Pagination.css';
+import { setShowCharacters } from '../../slices/characterSlice';
 
 export default function Pagination(): JSX.Element {
   const dispatch = useDispatch();
+  const filterCharacters = useSelector<RootState, CharactersInterface[]>(
+    (state) => state.characters.filterCharacters
+  );
   const currentPage = useSelector<RootState, number>(
     (state) => state.pagination.currentPage
   );
-  const [nextPageUrl, setNextPageUrl] = useState<string>();
-  const [prevPageUrl, setPrevPageUrl] = useState<string>();
-  const [pages, setPages] = useState<number>(0);
+  const pageSize = useSelector<RootState, number>(
+    (state) => state.pagination.pageSize
+  );
 
   let index: number[] = [];
   let showPages: number[] = [];
-
-  for (let i: number = 1; i <= pages; i++) {
+  for (
+    let i: number = 1;
+    i <= Math.ceil(filterCharacters.length / pageSize);
+    i++
+  ) {
     index.push(i);
   }
+
+  const handlePageChange = (num: number): void => {
+    dispatch(setCurrentPage(num));
+  };
+
+  useEffect(() => {
+    dispatch(
+      setShowCharacters({
+        characters: filterCharacters,
+        currentPage,
+        pageSize,
+      })
+    );
+  }, [filterCharacters, currentPage, pageSize, dispatch]);
 
   if (index.length <= 1) {
     return <></>;
@@ -41,30 +62,16 @@ export default function Pagination(): JSX.Element {
     }
   }
 
-  const handleNextPage = (num: number): void => {
-    if (nextPageUrl) {
-      dispatch(url(nextPageUrl));
-    }
-    dispatch(setCurrentPage(num));
-  };
-
-  const handlePrevPage = (num: number): void => {
-    if (prevPageUrl) {
-      dispatch(url(prevPageUrl));
-    }
-    dispatch(setCurrentPage(num));
-  };
-
   return (
     <nav className="containerPagination">
       <ul className="pagination pagination-lg mt-3">
-        {prevPageUrl ? (
+        {currentPage !== 1 ? (
           <li className="page-item">
             <button
               className="page-link"
               aria-label="Previous"
               onClick={() =>
-                handlePrevPage(
+                handlePageChange(
                   currentPage === 1 ? Math.max(...index) : currentPage - 1
                 )
               }
@@ -78,13 +85,13 @@ export default function Pagination(): JSX.Element {
             <button className="page-link">{el}</button>
           </li>
         ))}
-        {nextPageUrl ? (
+        {currentPage !== Math.max(...index) ? (
           <li className="page-item">
             <button
               className="page-link"
               aria-label="Next"
               onClick={() =>
-                handleNextPage(
+                handlePageChange(
                   Math.max(...index) === currentPage ? 1 : currentPage + 1
                 )
               }

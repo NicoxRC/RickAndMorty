@@ -6,13 +6,20 @@ export interface CharactersInterface {
   type: Type;
   gender: Gender;
   image: string;
-  origin: CharctersOriginType;
+  origin: CharctersOriginType[];
   location: number[];
   episode: number[];
 }
 export interface InitialStateCharactersInterface {
   characters: CharactersInterface[];
   filterCharacters: CharactersInterface[];
+  showCharacters: CharactersInterface[];
+}
+
+export interface PayloadShowCharactersInterface {
+  characters: CharactersInterface[];
+  currentPage: number;
+  pageSize: number;
 }
 
 type CharctersOriginType = {

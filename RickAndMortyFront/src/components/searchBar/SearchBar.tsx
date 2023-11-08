@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { characterApiName } from '../../services/charactersApiName';
-import { setCurrentPage, url } from '../../slices/paginationSlice';
+import { setCurrentPage } from '../../slices/paginationSlice';
 
 export default function SearchBar(): JSX.Element {
   const dispatch = useDispatch();
@@ -17,7 +17,6 @@ export default function SearchBar(): JSX.Element {
     e.preventDefault();
     const res: string | undefined = await characterApiName(name);
     if (typeof res === 'string') {
-      dispatch(url(res));
       dispatch(setCurrentPage(1));
     }
   };

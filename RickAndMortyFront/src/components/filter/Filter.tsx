@@ -41,7 +41,7 @@ export default function Filter(props: FilterPropsType) {
     dispatch(
       filterState({
         type: filterType.toLowerCase(),
-        filter: e.target.value.toLowerCase(),
+        filter: e.target.value,
       })
     );
   };
