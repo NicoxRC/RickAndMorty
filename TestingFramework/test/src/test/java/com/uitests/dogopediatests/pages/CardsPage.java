@@ -247,10 +247,6 @@ public class CardsPage extends Page {
     public List<DogCard> getAllDogCards() {
         if (cards == null)
             cards = createComponentList(cardsLocator, DogCard.class);
-        // cards = findElements(cardsLocator)
-        //         .stream()
-        //         .map(card -> new DogCard(card, driver))
-        //         .collect(Collectors.toList());
         return cards;
     }
 

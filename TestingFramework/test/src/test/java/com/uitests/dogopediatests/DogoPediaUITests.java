@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import com.uitests.dogopediatests.components.DogCard;
 import com.uitests.dogopediatests.pages.CardDetailsPage;
 import com.uitests.dogopediatests.pages.CardsPage;
+import com.uitests.dogopediatests.pojo.DogCardPojo;
 
 public class DogoPediaUITests {
 
@@ -47,14 +48,14 @@ public class DogoPediaUITests {
         CardsPage cardsPage = new CardsPage(driver);
 
         DogCard card = cardsPage.getRandomDogCart();
-        card.saveDogInfo();
+        DogCardPojo cardPojo = card.saveDogInfo();
 
         CardDetailsPage detailsPage = card.clickCard(driver);
 
-        Assert.assertEquals(card.getSavedDogName(), detailsPage.getDogName());
-        Assert.assertEquals(card.getSavedDogWeight(), detailsPage.getDogWeight());
+        Assert.assertEquals(cardPojo.getDogName(), detailsPage.getDogName());
+        Assert.assertEquals(cardPojo.getDogWeight(), detailsPage.getDogWeight());
         // Assert.assertEquals(card.getSavedDogTemperament(), detailsPage.getDogTemperament());
-        assertThat(card.getSavedDogTemperament())
+        assertThat(cardPojo.getDogTemperament())
                 .describedAs("The temperament of the dog is not as expected")
                 .isEqualTo(detailsPage.getDogTemperament());
     }
