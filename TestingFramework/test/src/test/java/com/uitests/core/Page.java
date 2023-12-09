@@ -1,5 +1,6 @@
 package com.uitests.core;
 
+import java.lang.reflect.Constructor;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +30,27 @@ public abstract class Page {
         wait = new WebDriverWait(driver, Duration.ofSeconds(5));
     }
 
+    protected WebElement findElement(By locator) {
+        return driver.findElement(locator);
+    }
+
+    protected List<WebElement> findElements(By locator) {
+        return driver.findElements(locator);
+    }
+
     protected void changeWaitTime(int seconds) {
         wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
     }
 
     protected <T> T waitUntil(final Function<? super WebDriver, T> condition) {
-        return wait.until(condition);
+        try {
+            return wait.until(condition);
+        } catch (NoSuchElementException e) {
+            LOGGER.warn("Web element not found");
+            return null;
+        }
     }
-    
+
     protected abstract void validatePageLoad();
 
     protected Select selectByValue(By selectLocator, String value) {
@@ -77,15 +91,38 @@ public abstract class Page {
         return element.getAttribute("value");
     }
 
+    protected String getSelectValue(By locator) {
+        Select select = getSelect(locator);
+        return select.getFirstSelectedOption().getText();
+    }
+
     protected Select getSelect(By locator) {
         return new Select(driver.findElement(locator));
     }
 
-    protected List<WebComponent> createComponentList(By locator) {
+    protected <T extends WebComponent> List<T> createComponentList(By locator, Class<T> componentClass) {
+        Constructor<T> constructor;
+        try {
+            constructor = componentClass.getConstructor(Page.class, WebElement.class);
+        } catch (NoSuchMethodException e) {
+            LOGGER.error("Web component not found");
+            throw new RuntimeException(e);
+        } catch (SecurityException e) {
+            LOGGER.error("Web component not found");
+            throw new RuntimeException(e);
+        }
+
         try {
             return driver.findElements(locator)
                     .stream()
-                    .map(element -> new WebComponent(this, element))
+                    .map(element -> {
+                        try {
+                            return constructor.newInstance(this, element);
+                        } catch (Exception e) {
+                            LOGGER.error("Web component not found");
+                            throw new RuntimeException(e);
+                        }
+                    })
                     .collect(Collectors.toList());
 
         } catch (NoSuchElementException | ElementNotInteractableException e) {

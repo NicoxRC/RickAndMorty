@@ -1,24 +1,21 @@
 package com.uitests.dogopediatests.pages;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.InvalidArgumentException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.uitests.core.Page;
 import com.uitests.dogopediatests.components.DogCard;
 
-public class CardsPage {
-    private WebDriver driver;
-    WebDriverWait wait;
-
+public class CardsPage extends Page {
     final private By loadingHearth = By.cssSelector("div[class='spinner_container']");
     final private By searchBarLocator = By.xpath("//input[@name='Search']");
     // private By searchButtonLocator = By.xpath("//button[contains(text(), 'Search')]");
@@ -31,7 +28,8 @@ public class CardsPage {
 
     private List<WebElement> navigationButtons;
     private List<DogCard> cards;
-    private Select temperamentSelect;
+
+    private final Logger LOGGER = LogManager.getLogger(this.getClass());
 
     public enum Temperaments {
         ALL("all", "Filter by temperaments"),
@@ -170,76 +168,55 @@ public class CardsPage {
     }
 
     public CardsPage(WebDriver driver) {
-        this.driver = driver;
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        super(driver);
+        validatePageLoad();
     }
 
-    public void waitForPageLoad()  {
-        wait.until(ExpectedConditions.invisibilityOf(driver.findElement(loadingHearth)));
-
+    @Override
+    protected void validatePageLoad() {
+        try {
+            waitUntil(ExpectedConditions.invisibilityOf(findElement(loadingHearth)));
+        } catch (NoSuchElementException e) {
+            LOGGER.warn("Loading hearth not found");
+        }
     }
-    // public void waitForCardsToBeVisible() throws InterruptedException {
-    //     wait.until(ExpectedConditions.(cardsLocator));
-    // }
 
     public void searchDog(String text) {
-        WebElement searchBar = driver.findElement(searchBarLocator);
-        // WebElement searchButton = driver.findElement(searchButtonLocator);
-        // wait.until(ExpectedConditions.visibilityOf(searchBar));
-        // wait.until(ExpectedConditions.visibilityOf(searchButton));
+        WebElement searchBar = findElement(searchBarLocator);
         searchBar.sendKeys(text);
-        // searchButton.click();
         searchBar.submit();
     }
 
     public void selectTemperamentByValue(Temperaments temperament) {
-        Select select = getTemperamentSelect();
-        select.selectByValue(temperament.value);
+        selectByValue(temperamentsSelectLocator, temperament.value);
     }
 
     public void selectTemperamentByVisibleText(Temperaments temperament) {
-        Select select = getTemperamentSelect();
-        select.selectByVisibleText(temperament.visibleText);
+        selectByVisibleText(temperamentsSelectLocator, temperament.visibleText);
     }
 
     public void selectTemperamentByIndex(int index) {
-        Select select = getTemperamentSelect();
-        try {
-            select.selectByIndex(index);
-        } catch (IndexOutOfBoundsException e) {
-            throw new InvalidArgumentException("The temperament is out of bounds");
-        }
+        selectByIndex(temperamentsSelectLocator, index);
     }
 
     public void selectTemperamentRandomly() {
-        List<WebElement> options = getTemperamentSelect().getOptions();
-        // int randomIndex = (int) (Math.random() * options.size());
-        // same but index 0 ommitted
-        int randomIndex = (int) (Math.random() * (options.size() - 1)) + 1;
-        options.get(randomIndex).click();
+        selectRandomly(temperamentsSelectLocator);
     }
 
     public String getTemperamentValue() {
-        Select select = getTemperamentSelect();
-        return select.getFirstSelectedOption().getText();
-    }
-
-    private Select getTemperamentSelect() {
-        if (temperamentSelect == null)
-            temperamentSelect = new Select(driver.findElement(temperamentsSelectLocator));
-        return temperamentSelect;
+        return getSelectValue(temperamentsSelectLocator);
     }
 
     public void clickNameSortButton() {
-        driver.findElement(nameSortButton).click();
+        findElement(nameSortButton).click();
     }
 
     public void clickWeightSortButton() {
-        driver.findElement(weightSortButton).click();
+        findElement(weightSortButton).click();
     }
 
     public void clickCreateDogCardButton() {
-        driver.findElement(createDogCardButton).click();
+        findElement(createDogCardButton).click();
     }
 
     public int getAmountOfNavigationButtons() {
@@ -263,37 +240,17 @@ public class CardsPage {
 
     private List<WebElement> getNavigationButtons() {
         if (navigationButtons == null)
-            navigationButtons = driver.findElements(navigationButtonsLocator);
+            navigationButtons = findElements(navigationButtonsLocator);
         return navigationButtons;
     }
 
-    // public void waitForCardsUpdate(String expectedText) {
-    //     wait.until(ExpectedConditions.visibilityOfElementLocated(cardTitlesLocator));
-    //     while (true) {
-    //         try {
-    //             wait.until(ExpectedConditions
-    //                     .textToBePresentInElement(driver.findElement(cardTitlesLocator), expectedText));
-    //             break;
-    //         } catch (TimeoutException e) {
-    //             System.out.println("Waiting for the element to load...");
-    //         }
-    //     }
-    // }
-
-    // public void waitForSelectsToLoad() {
-    //     wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(dropboxLocator));
-    // }
-
-    // public void simpleWaitForCardsUpdate() {
-    //     wait.until(ExpectedConditions.visibilityOfElementLocated(cardTitlesLocator));
-    // }
-
     public List<DogCard> getAllDogCards() {
         if (cards == null)
-            cards = driver.findElements(cardsLocator)
-                    .stream()
-                    .map(card -> new DogCard(card, driver))
-                    .collect(Collectors.toList());
+            cards = createComponentList(cardsLocator, DogCard.class);
+        // cards = findElements(cardsLocator)
+        //         .stream()
+        //         .map(card -> new DogCard(card, driver))
+        //         .collect(Collectors.toList());
         return cards;
     }
 

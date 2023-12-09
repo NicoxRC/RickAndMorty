@@ -35,7 +35,6 @@ public class DogoPediaUITests {
     @Test
     public void testAmountOfCards() {
         CardsPage cardsPage = new CardsPage(driver);
-        cardsPage.waitForPageLoad();
 
         int expectedNumberOfCards = 8;
         int actualNumberOfcards = cardsPage.getNumberOfDogCards();
@@ -46,13 +45,11 @@ public class DogoPediaUITests {
     @Test
     public void testCardDetailsPage() {
         CardsPage cardsPage = new CardsPage(driver);
-        cardsPage.waitForPageLoad();
 
         DogCard card = cardsPage.getRandomDogCart();
         card.saveDogInfo();
 
-        CardDetailsPage detailsPage = card.clickCard(driver)
-                .waitForPageLoad(); 
+        CardDetailsPage detailsPage = card.clickCard(driver);
 
         Assert.assertEquals(card.getSavedDogName(), detailsPage.getDogName());
         Assert.assertEquals(card.getSavedDogWeight(), detailsPage.getDogWeight());
@@ -65,7 +62,6 @@ public class DogoPediaUITests {
     @Test
     public void testTemperamentFilter() {
         final CardsPage cardsPage = new CardsPage(driver);
-        cardsPage.waitForPageLoad();
 
         cardsPage.selectTemperamentRandomly();
         final String expectedTemperament = cardsPage.getTemperamentValue();
